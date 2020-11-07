@@ -1,9 +1,11 @@
 package edu.team10.lifetime.application;
 	
+import experiments.TaskDashboard;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 
 public class Main extends Application {
@@ -11,6 +13,10 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = new BorderPane();
+			
+			VBox taskDb = new TaskDashboard();
+			root.setCenter(taskDb);
+			
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
