@@ -26,4 +26,8 @@ public class TimeTrigger implements ITrigger {
 		this.attachedTask = attachedTask;
 	}
 
+	@Override
+	public int hashCode() {
+		return attachedTask.hashCode() + timeToTrigger.hashCode();
+	}
 }
