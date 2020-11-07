@@ -1,3 +1,4 @@
+package edu.team10.lifetime.application;
 
 import java.util.Optional;
 
