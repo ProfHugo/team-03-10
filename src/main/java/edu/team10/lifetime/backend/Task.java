@@ -17,6 +17,8 @@ public class Task implements Comparable<Task>{
 
 	private HashSet<ITrigger> triggers;
 
+	private boolean isActive;
+	
 	public Task(String name) {
 		this.name = name;
 		timer = new Timer();
@@ -27,6 +29,7 @@ public class Task implements Comparable<Task>{
 	 */
 	public void startTask() {
 		this.timer.start();
+		this.isActive = true;
 	}
 
 	/**
@@ -34,6 +37,7 @@ public class Task implements Comparable<Task>{
 	 */
 	public void stopTask() {
 		this.timer.stop();
+		this.isActive = false;
 	}
 
 	public String getName() {
@@ -43,17 +47,21 @@ public class Task implements Comparable<Task>{
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public boolean isActive() {
+		return isActive;
+	}
 
 	public HashSet<ITrigger> getTriggers() {
 		return triggers;
 	}
 
-	public void removeTrigger(ITrigger trigger) {
-		this.triggers.remove(trigger);
+	public boolean removeTrigger(ITrigger trigger) {
+		return this.triggers.remove(trigger);
 	}
 
-	public void addTrigger(ITrigger trigger) {
-		this.triggers.add(trigger);
+	public boolean addTrigger(ITrigger trigger) {
+		return this.triggers.add(trigger);
 	}
 	
 	public int hashCode() {
