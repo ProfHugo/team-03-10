@@ -3,7 +3,6 @@ bin
 *.launch
 .settings
 .metadata
-.classpath
 .project
 
 # idea
@@ -23,3 +22,4 @@ run
 logs
 .gitattributes
 target
+/testbin/
