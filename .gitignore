@@ -4,6 +4,7 @@ bin
 .settings
 .metadata
 .project
+.classpath
 
 # idea
 out
