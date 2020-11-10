@@ -1,7 +1,5 @@
 package edu.team10.lifetime.backend;
 
-import java.util.HashSet;
-
 /**
  * A class representing a Task in the application. Each task has a name, its own
  * timer, and a set of triggers which would automatically start the task.
@@ -14,8 +12,6 @@ public class Task implements Comparable<Task>{
 	private String name;
 
 	private Timer timer;
-
-	private HashSet<ITrigger> triggers;
 
 	private boolean isActive;
 	
@@ -50,18 +46,6 @@ public class Task implements Comparable<Task>{
 	
 	public boolean isActive() {
 		return isActive;
-	}
-
-	public HashSet<ITrigger> getTriggers() {
-		return triggers;
-	}
-
-	public boolean removeTrigger(ITrigger trigger) {
-		return this.triggers.remove(trigger);
-	}
-
-	public boolean addTrigger(ITrigger trigger) {
-		return this.triggers.add(trigger);
 	}
 	
 	public int hashCode() {

@@ -12,7 +12,6 @@ public class TimeTrigger implements ITrigger {
 		if (OffsetTime.now().equals(timeToTrigger)) {
 			return true;
 		}
-		
 		return false;
 	}
 
@@ -26,6 +25,11 @@ public class TimeTrigger implements ITrigger {
 		this.attachedTask = attachedTask;
 	}
 
+	public boolean equals(Object o) {
+		TimeTrigger other = (TimeTrigger)o;
+		return this.attachedTask.equals(other.getAttachedTask()) && this.timeToTrigger.equals(other.timeToTrigger);
+	}
+	
 	@Override
 	public int hashCode() {
 		return attachedTask.hashCode() + timeToTrigger.hashCode();
