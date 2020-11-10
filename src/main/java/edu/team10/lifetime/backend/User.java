@@ -77,4 +77,11 @@ public class User {
 		this.username = username;
 	}
 	
+	/**
+	 * 
+	 * @return The internet set of all tasks. Avoid if possible?
+	 */
+	public TreeSet<Task> getAllTasks() {
+		return this.allTasks;
+	}
 }

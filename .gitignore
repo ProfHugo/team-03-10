@@ -3,6 +3,7 @@ bin
 *.launch
 .settings
 .metadata
+.project
 
 # idea
 out
