@@ -1,5 +1,7 @@
 package edu.team10.lifetime.backend;
 
+import java.time.Duration;
+
 /**
  * A class representing a Task in the application. Each task has a name, its own
  * timer, and a set of triggers which would automatically start the task.
@@ -7,17 +9,18 @@ package edu.team10.lifetime.backend;
  * @author Hugo Wong
  *
  */
-public class Task implements Comparable<Task>{
+public class Task implements Comparable<Task> {
 
 	private String name;
 
 	private Timer timer;
 
-	private boolean isActive;
-	
+	private TaskState currentState;
+
 	public Task(String name) {
 		this.name = name;
 		timer = new Timer();
+		this.currentState = TaskState.INACTIVE;
 	}
 
 	/**
@@ -25,7 +28,21 @@ public class Task implements Comparable<Task>{
 	 */
 	public void startTask() {
 		this.timer.start();
-		this.isActive = true;
+		this.currentState = TaskState.ACTIVE;
+	}
+
+	/**
+	 * Toggle between pause/unpause for this task.
+	 */
+	public boolean togglePauseTask() {
+		if (this.isActive()) {
+			this.timer.togglePause();
+			return true;
+		} else {
+			System.out.println("Warning: Cannot pause/unpause an inactive task.");
+			return false;
+		}
+
 	}
 
 	/**
@@ -33,7 +50,24 @@ public class Task implements Comparable<Task>{
 	 */
 	public void stopTask() {
 		this.timer.stop();
-		this.isActive = false;
+		this.currentState = TaskState.INACTIVE;
+	}
+
+	/**
+	 * 
+	 * @return The difference between the time when this task was started and when
+	 *         it was stopped.
+	 */
+	public Duration getDelta() {
+		return this.timer.getDelta();
+	}
+
+	/**
+	 * 
+	 * @return The amount of active time elapsed for this task for this session.
+	 */
+	public Duration getTimeElapsed() {
+		return this.timer.getElapsed();
 	}
 
 	public String getName() {
@@ -43,9 +77,17 @@ public class Task implements Comparable<Task>{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	public TaskState getState() {
+		return this.currentState;
+	}
+
+	/**
+	 * For a task to be active, it's either ongoing or it's paused.
+	 * @return
+	 */
 	public boolean isActive() {
-		return isActive;
+		return this.currentState != TaskState.INACTIVE;
 	}
 	
 	public int hashCode() {
@@ -55,7 +97,7 @@ public class Task implements Comparable<Task>{
 	public boolean equals(Object o) {
 		return this.compareTo((Task) o) == 0;
 	}
-	
+
 	@Override
 	public int compareTo(Task o) {
 		return this.name.compareTo(o.getName());
