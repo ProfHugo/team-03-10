@@ -1,0 +1,31 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/** TaskDashboard */
+#taskDashboard {
+	-fx-background-color: GHOSTWHITE;
+	-fx-padding: 20;
+}
+
+/** Buttons */
+
+#addBtn {
+	-fx-graphic: url("images/new_task.png"); 
+}
+
+#playBtn {
+	-fx-background-color: transparent;
+	-fx-pref-height: 50px;
+	-fx-pref-width: 50px;
+    
+	-fx-background-image: url("images/play.png"); 
+	-fx-background-size: 50px 50px; 
+	-fx-background-repeat: no-repeat; 
+	-fx-background-position: center;  
+}
+
+
+#taskBox {
+	-fx-background-color: DARKSEAGREEN;
+	-fx-spacing: 30;
+	-fx-padding: 20;
+}
