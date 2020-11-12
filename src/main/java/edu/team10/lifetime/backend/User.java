@@ -21,7 +21,6 @@ public class User {
 		this.allTasks = new TreeSet<>();
 	}
 
-	
 	public String getUsername() {
 		return username;
 	}
@@ -30,7 +29,8 @@ public class User {
 		this.username = username;
 	}
 
-	// The following are a set of responsibilities that may be pulled out onto other classes should that be a better option
+	// The following are a set of responsibilities that may be pulled out onto other
+	// classes should that be a better option
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class User {
 	public TreeSet<Task> getAllTasks() {
 		return this.allTasks;
 	}
-	
+
 	/**
 	 * 
 	 * @param taskName the name of the task to find.
@@ -79,6 +79,20 @@ public class User {
 
 	/**
 	 * Precondition: The task is in the system and is currently active.
+	 * Postcondition: If the task was unpaused, it's paused, and vice versa.
+	 * 
+	 * @return Whether or not the active task was paused/unpaused.
+	 */
+	public boolean togglePauseTask(String taskName) {
+		Task task = this.getTaskByName(taskName);
+		if (!task.isActive()) {
+			return false;
+		}
+		return task.togglePauseTask();
+	}
+
+	/**
+	 * Precondition: The task is in the system and is currently active.
 	 * Postcondition: The task is stopped and remains in the system.
 	 * 
 	 * @return Whether or not the task ends successfully.
@@ -91,7 +105,7 @@ public class User {
 		task.stopTask();
 		return !task.isActive();
 	}
-	
+
 	/**
 	 * 
 	 * @param trigger The trigger to add to the set of all triggers to check for.
@@ -100,18 +114,20 @@ public class User {
 	public boolean addTrigger(ITrigger trigger) {
 		return this.triggers.add(trigger);
 	}
-	
+
 	/**
 	 * 
-	 * @param trigger The trigger to remove from the set of all triggers to check for.
+	 * @param trigger The trigger to remove from the set of all triggers to check
+	 *                for.
 	 * @return Whether or not this trigger was removed successfully.
 	 */
 	public boolean removeTrigger(ITrigger trigger) {
 		return this.triggers.remove(trigger);
 	}
-	
+
 	/**
-	 * Check to see if any trigger's condition is fulfilled. If so, start the task attached to the trigger if it isn't already active.
+	 * Check to see if any trigger's condition is fulfilled. If so, start the task
+	 * attached to the trigger if it isn't already active.
 	 */
 	public void checkTriggers() {
 		for (ITrigger trigger : triggers) {
