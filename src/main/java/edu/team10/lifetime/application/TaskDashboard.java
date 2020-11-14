@@ -1,8 +1,6 @@
 package edu.team10.lifetime.application;
 
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import edu.team10.lifetime.backend.TaskState;
 import edu.team10.lifetime.backend.User;
