@@ -69,7 +69,7 @@ public class TaskDashboard extends VBox {
 		user.addTask(taskName);
 
 		System.out.println(taskName);
-		
+
 		HBox taskContainer = new HBox();
 		taskContainer.setId("taskBox");
 
@@ -105,13 +105,21 @@ public class TaskDashboard extends VBox {
 			default:
 				break;
 			}
-			//if ()
-			
+			// if ()
+
 			System.out.println();
 		});
-		
-		Button stopBtn = makeStopBtn();
-		
+
+		Button stopBtn = new Button();
+		stopBtn.setId("stopBtn"); // style
+
+		// event handler
+		stopBtn.setOnAction(event -> {
+			status.setText("Status: Stopped");
+			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
+			user.stopTask(taskName);
+		});
+
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
 
 		// add labels and buttons to taskContainer
@@ -120,35 +128,23 @@ public class TaskDashboard extends VBox {
 		// adds taskContainer to dashboard display
 		this.getChildren().addAll(taskContainer);
 	}
-	
-	// creates a button to stop the task
-	public Button makeStopBtn() {
-		Button stopBtn = new Button();
-		stopBtn.setId("stopBtn");		// style
-		
-		// event handler
-		stopBtn.setOnAction(event -> {
-			System.out.println("stopped task");
-		});
-		
-		return stopBtn;
-	}
-	
-	// takes in the element that contains all the task's information to delete, and task name to identify task
-	// creates a button that removes the task from display when clicked 
+
+	// takes in the element that contains all the task's information to delete, and
+	// task name to identify task
+	// creates a button that removes the task from display when clicked
 	public Button makeRemoveBtn(HBox taskContainer, String taskName) {
-		Button removeBtn = new Button();		
-		removeBtn.setId("removeBtn");	// style 
-		
-		// event handler: removes task 
+		Button removeBtn = new Button();
+		removeBtn.setId("removeBtn"); // style
+
+		// event handler: removes task
 		removeBtn.setOnAction(event -> {
-			user.removeTask(user.getTaskByName(taskName));	// removes task data 
-			this.getChildren().remove(taskContainer);		// removes display of task on dashboard
+			user.removeTask(taskName); // removes task data
+			this.getChildren().remove(taskContainer); // removes display of task on dashboard
 		});
-		
+
 		return removeBtn;
 	}
-	
+
 	/**
 	 * Check to see if this task name is valid. WIP
 	 * 
@@ -157,11 +153,10 @@ public class TaskDashboard extends VBox {
 	 */
 	public boolean validateTaskName(String taskName) {
 		/*
-		Pattern noSpecialChar = Pattern.compile("[^a-zA-Z0-9 ]");
-		Pattern hasCharacter = Pattern.compile("[a-zA-Z]");
-		Matcher hasNoSpecialChar = noSpecialChar.matcher(taskName);
-		return !hasNoSpecialChar.find();
-		*/
+		 * Pattern noSpecialChar = Pattern.compile("[^a-zA-Z0-9 ]"); Pattern
+		 * hasCharacter = Pattern.compile("[a-zA-Z]"); Matcher hasNoSpecialChar =
+		 * noSpecialChar.matcher(taskName); return !hasNoSpecialChar.find();
+		 */
 		return true;
 	}
 

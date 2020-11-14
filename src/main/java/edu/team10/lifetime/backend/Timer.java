@@ -60,10 +60,10 @@ public class Timer {
 	 * Stop the timer.
 	 */
 	public void stop() {
+		stopTime = Instant.now();
 		if (this.currentState == TimerState.ACTIVE) {
 			totalTimeElapsed = Duration.between(lastResumed, stopTime).plus(totalTimeElapsed);
 		}
-		stopTime = Instant.now();
 		// lastResume is startTime if the task was never paused
 		currentState = TimerState.STOPPED;
 	}

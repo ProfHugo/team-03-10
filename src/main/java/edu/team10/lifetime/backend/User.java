@@ -70,6 +70,10 @@ public class User {
 		return this.addTask(new Task(taskName));
 	}
 
+	public boolean removeTask(String taskName) {
+		return this.removeTask(this.getTaskByName(taskName));
+	}
+	
 	public boolean removeTask(Task task) {
 		return this.allTasks.remove(task);
 	}
@@ -109,7 +113,7 @@ public class User {
 	 * 
 	 * @return Whether or not the task ends successfully.
 	 */
-	public boolean endTask(String taskName) {
+	public boolean stopTask(String taskName) {
 		Task task = this.getTaskByName(taskName);
 		if (!task.isActive()) {
 			return false;
