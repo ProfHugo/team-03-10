@@ -37,6 +37,11 @@ public class Task implements Comparable<Task> {
 	public boolean togglePauseTask() {
 		if (this.isActive()) {
 			this.timer.togglePause();
+			if (this.getState() == TaskState.ACTIVE) {
+				this.currentState = TaskState.PAUSED;
+			} else {
+				this.currentState = TaskState.ACTIVE;
+			}
 			return true;
 		} else {
 			System.out.println("Warning: Cannot pause/unpause an inactive task.");
@@ -100,7 +105,7 @@ public class Task implements Comparable<Task> {
 
 	@Override
 	public int compareTo(Task o) {
-		return this.name.compareTo(o.getName());
+		return this.name.compareToIgnoreCase((o.getName()));
 	}
 
 }

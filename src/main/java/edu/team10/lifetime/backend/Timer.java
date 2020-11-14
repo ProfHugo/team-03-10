@@ -49,6 +49,7 @@ public class Timer {
 		case PAUSED:
 			lastResumed = Instant.now();
 			currentState = TimerState.ACTIVE;
+			break;
 		default:
 			System.out.println("Warning: Cannot pause/unpause an inactive timer.");
 			break;

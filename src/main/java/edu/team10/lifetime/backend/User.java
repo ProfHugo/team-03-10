@@ -47,15 +47,27 @@ public class User {
 	 */
 	public Task getTaskByName(String taskName) {
 		for (Task t : allTasks) {
-			if (t.getName().equals(taskName)) {
+			if (t.getName().equalsIgnoreCase(taskName)) {
 				return t;
 			}
 		}
 		return null;
 	}
+	
+	public TaskState getTaskState(String taskName) {
+		return this.getTaskByName(taskName).getState();
+	}
+	
+	public boolean hasTask(String taskName) {
+		return getTaskByName(taskName) != null;
+	}
 
 	public boolean addTask(Task task) {
 		return this.allTasks.add(task);
+	}
+	
+	public boolean addTask(String taskName) {
+		return this.addTask(new Task(taskName));
 	}
 
 	public boolean removeTask(Task task) {
