@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+// displays a list of all tasks and a button to create new tasks
 public class TaskDashboard extends VBox {
 
 	private User user;
@@ -26,6 +27,7 @@ public class TaskDashboard extends VBox {
 		makeAddBtn();
 	}
 
+	// creates a button to add tasks
 	public void makeAddBtn() {
 		// make & style button
 		Button addBtn = new Button();
@@ -68,8 +70,8 @@ public class TaskDashboard extends VBox {
 
 		System.out.println(taskName);
 		
-		HBox hbox = new HBox();
-		hbox.setId("taskBox");
+		HBox taskContainer = new HBox();
+		taskContainer.setId("taskBox");
 
 		// make & style labels & buttons
 		Label name = new Label(taskName);
@@ -107,11 +109,44 @@ public class TaskDashboard extends VBox {
 			
 			System.out.println();
 		});
+		
+		Button stopBtn = makeStopBtn();
+		
+		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
 
-		hbox.getChildren().addAll(playBtn, status, name);
+		// add labels and buttons to taskContainer
+		taskContainer.getChildren().addAll(playBtn, status, name, stopBtn, removeBtn);
 
-		// add labels & buttons to VBox
-		this.getChildren().addAll(hbox);
+		// adds taskContainer to dashboard display
+		this.getChildren().addAll(taskContainer);
+	}
+	
+	// creates a button to stop the task
+	public Button makeStopBtn() {
+		Button stopBtn = new Button();
+		stopBtn.setId("stopBtn");		// style
+		
+		// event handler
+		stopBtn.setOnAction(event -> {
+			System.out.println("stopped task");
+		});
+		
+		return stopBtn;
+	}
+	
+	// takes in the element that contains all the task's information to delete, and task name to identify task
+	// creates a button that removes the task from display when clicked 
+	public Button makeRemoveBtn(HBox taskContainer, String taskName) {
+		Button removeBtn = new Button();		
+		removeBtn.setId("removeBtn");	// style 
+		
+		// event handler: removes task 
+		removeBtn.setOnAction(event -> {
+			user.removeTask(user.getTaskByName(taskName));	// removes task data 
+			this.getChildren().remove(taskContainer);		// removes display of task on dashboard
+		});
+		
+		return removeBtn;
 	}
 	
 	/**

@@ -17,7 +17,31 @@
 	-fx-pref-height: 50px;
 	-fx-pref-width: 50px;
     
+    	/*sets button's image */
 	-fx-background-image: url("images/play.png"); 
+	-fx-background-size: 50px 50px; 
+	-fx-background-repeat: no-repeat; 
+	-fx-background-position: center;  
+}
+
+#stopBtn {
+		-fx-background-color: transparent;
+	-fx-pref-height: 50px;
+	-fx-pref-width: 50px;
+    
+    	/*sets button's image */
+	-fx-background-image: url("images/stop.png"); 
+	-fx-background-size: 50px 50px; 
+	-fx-background-repeat: no-repeat; 
+	-fx-background-position: center;  
+}
+
+#removeBtn {
+	-fx-background-color: transparent;
+	-fx-pref-height: 50px;
+	-fx-pref-width: 50px;
+    
+	-fx-background-image: url("images/trashcan.png"); 
 	-fx-background-size: 50px 50px; 
 	-fx-background-repeat: no-repeat; 
 	-fx-background-position: center;  
