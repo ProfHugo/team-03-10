@@ -131,6 +131,8 @@ public class TaskDashboard extends VBox {
 	// task name to identify task
 	// creates a button that removes the task from display when clicked
 	public Button makeRemoveBtn(HBox taskContainer, String taskName) {
+		// WIP: Pops up a prompt asking if the user really, really wants to remove the task
+		// ALSO WIP: Handle delete when the task is active.
 		Button removeBtn = new Button();
 		removeBtn.setId("removeBtn"); // style
 

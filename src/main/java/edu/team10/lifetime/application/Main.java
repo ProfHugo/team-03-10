@@ -18,7 +18,8 @@ public class Main extends Application {
 			VBox taskDb = new TaskDashboard();
 			root.setCenter(taskDb);
 			
-			Scene scene = new Scene(root, 600, 400);
+			
+			Scene scene = new Scene(root, 1280, 720);
 			
 			scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/taskDashboard.css").toExternalForm());
