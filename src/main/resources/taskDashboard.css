@@ -4,6 +4,7 @@
 #taskDashboard {
 	-fx-background-color: GHOSTWHITE;
 	-fx-padding: 20;
+	-fx-spacing: 10;
 }
 
 /** Buttons */
@@ -25,7 +26,7 @@
 }
 
 #stopBtn {
-		-fx-background-color: transparent;
+	-fx-background-color: transparent;
 	-fx-pref-height: 50px;
 	-fx-pref-width: 50px;
     
