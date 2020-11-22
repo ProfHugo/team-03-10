@@ -1,5 +1,6 @@
 package edu.team10.lifetime.backend;
 
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.TreeSet;
 
@@ -15,6 +16,7 @@ public class User {
 	private HashSet<ITrigger> triggers;
 	private TreeSet<Task> allTasks;
 	private String username;
+	private DataRecord taskRecord;
 
 	public User(String username) {
 		this.username = username;
@@ -53,11 +55,11 @@ public class User {
 		}
 		return null;
 	}
-	
+
 	public TaskState getTaskState(String taskName) {
 		return this.getTaskByName(taskName).getState();
 	}
-	
+
 	public boolean hasTask(String taskName) {
 		return getTaskByName(taskName) != null;
 	}
@@ -65,7 +67,7 @@ public class User {
 	public boolean addTask(Task task) {
 		return this.allTasks.add(task);
 	}
-	
+
 	public boolean addTask(String taskName) {
 		return this.addTask(new Task(taskName));
 	}
@@ -73,7 +75,7 @@ public class User {
 	public boolean removeTask(String taskName) {
 		return this.removeTask(this.getTaskByName(taskName));
 	}
-	
+
 	public boolean removeTask(Task task) {
 		return this.allTasks.remove(task);
 	}
@@ -109,7 +111,8 @@ public class User {
 
 	/**
 	 * Precondition: The task is in the system and is currently active.
-	 * Postcondition: The task is stopped and remains in the system.
+	 * Postcondition: The task is stopped and remains in the system. The task's
+	 * completion history will be appended to the data record.
 	 * 
 	 * @return Whether or not the task ends successfully.
 	 */
@@ -119,6 +122,11 @@ public class User {
 			return false;
 		}
 		task.stopTask();
+
+		// enter the task performance into record.
+		DataEntry entry = new DataEntry(taskName, LocalTime.from(task.getStartTime()),
+				LocalTime.from(task.getStopTime()), task.getTimeElapsed());
+		this.taskRecord.addToRecord(entry);
 		return !task.isActive();
 	}
 
@@ -152,5 +160,13 @@ public class User {
 				attachedTask.startTask();
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @return The task record of this user.
+	 */
+	public DataRecord getTaskRecord() {
+		return taskRecord;
 	}
 }

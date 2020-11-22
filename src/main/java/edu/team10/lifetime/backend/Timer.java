@@ -68,6 +68,21 @@ public class Timer {
 		currentState = TimerState.STOPPED;
 	}
 
+	
+	/**
+	 * @return the startTime
+	 */
+	public Instant getStartTime() {
+		return startTime;
+	}
+
+	/**
+	 * @return the stopTime
+	 */
+	public Instant getStopTime() {
+		return stopTime;
+	}
+
 	/**
 	 * 
 	 * @return The difference between the time when the timer was started and when

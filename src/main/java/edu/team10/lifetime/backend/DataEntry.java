@@ -1,7 +1,7 @@
 package edu.team10.lifetime.backend;
 
 import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * This class represents a single entry in the user's task history. One such
@@ -15,11 +15,11 @@ public class DataEntry {
 	
 	private String taskName;
 	
-	private LocalDate startTime, endTime;
+	private LocalTime startTime, endTime;
 	
 	private Duration elapsedTime;
 
-	public DataEntry(String taskName, LocalDate startTime, LocalDate endTime, Duration elapsedTime) {
+	public DataEntry(String taskName, LocalTime startTime, LocalTime endTime, Duration elapsedTime) {
 		this.taskName = taskName;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -43,28 +43,28 @@ public class DataEntry {
 	/**
 	 * @return the startTime
 	 */
-	public LocalDate getStartTime() {
+	public LocalTime getStartTime() {
 		return startTime;
 	}
 
 	/**
 	 * @param startTime the startTime to set
 	 */
-	public void setStartTime(LocalDate startTime) {
+	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
 
 	/**
 	 * @return the endTime
 	 */
-	public LocalDate getEndTime() {
+	public LocalTime getEndTime() {
 		return endTime;
 	}
 
 	/**
 	 * @param endTime the endTime to set
 	 */
-	public void setEndTime(LocalDate endTime) {
+	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
 

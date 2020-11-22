@@ -1,6 +1,7 @@
 package edu.team10.lifetime.backend;
 
 import java.time.Duration;
+import java.time.Instant;
 
 /**
  * A class representing a Task in the application. Each task has a name, its own
@@ -58,6 +59,20 @@ public class Task implements Comparable<Task> {
 		this.currentState = TaskState.INACTIVE;
 	}
 
+	/**
+	 * @return the startTime
+	 */
+	public Instant getStartTime() {
+		return timer.getStartTime();
+	}
+
+	/**
+	 * @return the stopTime
+	 */
+	public Instant getStopTime() {
+		return timer.getStopTime();
+	}
+	
 	/**
 	 * 
 	 * @return The difference between the time when this task was started and when

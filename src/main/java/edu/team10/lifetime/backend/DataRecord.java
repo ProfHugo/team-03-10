@@ -1,5 +1,6 @@
 package edu.team10.lifetime.backend;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.LinkedList;
  * @author Hugo Wong
  *
  */
-public class DataRecord {
+public class DataRecord implements Iterable<DataEntry> {
 
 	LinkedList<DataEntry> taskHistory;
 
@@ -69,6 +70,11 @@ public class DataRecord {
 		}
 		
 		return history;
+	}
+
+	@Override
+	public Iterator<DataEntry> iterator() {
+		return taskHistory.iterator();
 	}
 
 }
