@@ -75,8 +75,8 @@ public class TaskDashboard extends VBox {
 		Label name = new Label(taskName);
 		name.setFont(new Font("Arial", 28));
 
-		Label status = new Label("Status: Stopped");
-		status.setFont(new Font("Arial", 20));
+		TimeLabel timeDisplay = new TimeLabel(user.getTaskByName(taskName));		// live display of time
+		timeDisplay.setFont(new Font("Arial", 20));
 
 		Button playBtn = new Button();
 		playBtn.setId("playBtn");
@@ -86,19 +86,19 @@ public class TaskDashboard extends VBox {
 			TaskState currentState = user.getTaskState(taskName);
 			switch (currentState) {
 			case INACTIVE:
-				status.setText("Status: Active");
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
 				user.startTask(taskName);
+				timeDisplay.timer.start();		
 				break;
 			case ACTIVE:
-				status.setText("Status: Paused");
 				playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 				user.togglePauseTask(taskName);
+				timeDisplay.timer.stop();
 				break;
 			case PAUSED:
-				status.setText("Status: Active");
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
 				user.togglePauseTask(taskName);
+				timeDisplay.timer.start();
 				break;
 			default:
 				break;
@@ -113,7 +113,7 @@ public class TaskDashboard extends VBox {
 
 		// event handler
 		stopBtn.setOnAction(event -> {
-			status.setText("Status: Stopped");
+			timeDisplay.setText("Status: Stopped");
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 			user.stopTask(taskName);
 		});
@@ -121,7 +121,7 @@ public class TaskDashboard extends VBox {
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
 
 		// add labels and buttons to taskContainer
-		taskContainer.getChildren().addAll(playBtn, status, name, stopBtn, removeBtn);
+		taskContainer.getChildren().addAll(playBtn, timeDisplay, name, stopBtn, removeBtn);
 
 		// adds taskContainer to dashboard display
 		this.getChildren().addAll(taskContainer);
