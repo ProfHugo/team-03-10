@@ -1,6 +1,7 @@
 package edu.team10.lifetime.backend;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.TreeSet;
 
@@ -19,8 +20,10 @@ public class User {
 	private DataRecord taskRecord;
 
 	public User(String username) {
+		this.triggers = new HashSet<>();
 		this.username = username;
 		this.allTasks = new TreeSet<>();
+		this.taskRecord = new DataRecord();
 	}
 
 	public String getUsername() {
@@ -124,8 +127,8 @@ public class User {
 		task.stopTask();
 
 		// enter the task performance into record.
-		DataEntry entry = new DataEntry(taskName, LocalTime.from(task.getStartTime()),
-				LocalTime.from(task.getStopTime()), task.getTimeElapsed());
+		DataEntry entry = new DataEntry(taskName, LocalTime.from(task.getStartTime().atZone(ZoneId.systemDefault())),
+				LocalTime.from(task.getStopTime().atZone(ZoneId.systemDefault())), task.getTimeElapsed());
 		this.taskRecord.addToRecord(entry);
 		return !task.isActive();
 	}
