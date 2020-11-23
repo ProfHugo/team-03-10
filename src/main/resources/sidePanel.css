@@ -1,12 +1,15 @@
 /**Side Panel */
 #sidePanel {
 	-fx-background-color: DARKSEAGREEN;
-	-fx-padding: 20;
+	-fx-padding: 10;
+	-fx-pref-width: 150;
 }
 .sidePanelBtn {
 	-fx-pref-height: 50px;
-	-fx-pref-width: 100px;
+	-fx-pref-width: 125;
 	-fx-background-color: transparent;
+	
+	-fx-font-size: 15;
 }
 #settingsBtn {
 	-fx-background-image: url("images/gearwheel.png"); 

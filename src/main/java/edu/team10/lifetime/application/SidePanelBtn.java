@@ -9,6 +9,6 @@ public class SidePanelBtn extends Button{
 			super();
 			
 			this.setText(name);
-			this.getStyleClass().add("sidePanelBtn");	// allows css to recognize ID and style instances of this class
+			this.getStyleClass().add("sidePanelBtn");	// allows CSS to recognize class name and style instances of this class
 		}
 }

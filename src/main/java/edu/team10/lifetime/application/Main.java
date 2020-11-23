@@ -8,17 +8,26 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	
+	static BorderPane root;
+	static ScrollPane scrollpane;
+	static SidePanel sidePanel;
+	static TaskDashboard taskDb;
+	static SettingsPage settingsPage;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
+			root = new BorderPane();
 			
-			VBox sidePanel = new SidePanel();
+			sidePanel = new SidePanel();
 			root.setLeft(sidePanel);
 
-			VBox taskDb = new TaskDashboard();
-			// allow scrolling in task dashboard
-			ScrollPane scrollpane = new ScrollPane();	
+			taskDb = new TaskDashboard();
+			settingsPage = new SettingsPage();
+			
+			// allow scrolling
+			scrollpane = new ScrollPane();	
 			scrollpane.setContent(taskDb);
 			root.setCenter(scrollpane);		// add scrollpane (containg task dashboard) to root
 			
@@ -27,6 +36,8 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/taskDashboard.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/sidePanel.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/settingsPage.css").toExternalForm());
+
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();

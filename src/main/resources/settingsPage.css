@@ -1,0 +1,28 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+
+#settingsPage {
+	-fx-padding : 40;  
+}
+
+#settingsPageTitle {
+	
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-font-size: 30;
+	-fx-padding : 40;  
+}
+
+.settingBox {
+	-fx-spacing: 20;
+}
+#greenBtn, #blueBtn {
+	-fx-pref-width: 50;
+}
+#greenBtn {
+	-fx-background-color: DARKSEAGREEN;
+}
+#blueBtn {
+	-fx-background-color: POWDERBLUE;
+
+}

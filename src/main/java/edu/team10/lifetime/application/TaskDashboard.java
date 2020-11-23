@@ -77,6 +77,7 @@ public class TaskDashboard extends VBox {
 
 		TimeLabel timeDisplay = new TimeLabel(taskName);		// live display of time
 		timeDisplay.setFont(new Font("Arial", 20));
+		//timeDisplay.setVisibility(false);	// invisible on default
 
 		Button playBtn = new Button();
 		playBtn.setId("playBtn");
@@ -148,6 +149,7 @@ public class TaskDashboard extends VBox {
 
 	/**
 	 * Check to see if this task name is valid. WIP
+	 * possible features: having character limit
 	 * 
 	 * @param taskName
 	 * @return

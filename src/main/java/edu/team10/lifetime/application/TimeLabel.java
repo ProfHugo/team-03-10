@@ -17,7 +17,6 @@ public class TimeLabel extends Label {
 	public TimeLabel(String taskName) {
 		super(taskName);
 		seconds = 0;
-		
 	}
 
 	/**
@@ -37,12 +36,15 @@ public class TimeLabel extends Label {
 			}
 		};
 		timer.schedule(incrementTask, 0, 1000);
+		
+		//setVisibility(true);
 	}
 
 	/**
 	 * Pause the timer.
 	 */
 	public void pauseTimer() {
+		//setVisibility(false);
 		timer.cancel();
 	}
 	
@@ -52,6 +54,14 @@ public class TimeLabel extends Label {
 	public void stopTimer() {
 		timer.cancel();
 		seconds = 0;
+	}
+	
+	/** 
+	 * Make the timer invisible or visible 
+	 * */
+	public void setVisibility(boolean value) {
+		this.setVisible(value);
+		this.setManaged(value);
 	}
 
 }
