@@ -116,6 +116,7 @@ public class TaskDashboard extends VBox {
 			timeDisplay.setText("Status: Stopped");
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 			user.stopTask(taskName);
+			timeDisplay.stopTimer();
 		});
 
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
