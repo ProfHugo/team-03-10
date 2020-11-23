@@ -75,7 +75,7 @@ public class TaskDashboard extends VBox {
 		Label name = new Label(taskName);
 		name.setFont(new Font("Arial", 28));
 
-		TimeLabel timeDisplay = new TimeLabel(user.getTaskByName(taskName));		// live display of time
+		TimeLabel timeDisplay = new TimeLabel(taskName);		// live display of time
 		timeDisplay.setFont(new Font("Arial", 20));
 
 		Button playBtn = new Button();
@@ -88,17 +88,17 @@ public class TaskDashboard extends VBox {
 			case INACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
 				user.startTask(taskName);
-				timeDisplay.timer.start();		
+				timeDisplay.startTimer();		
 				break;
 			case ACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 				user.togglePauseTask(taskName);
-				timeDisplay.timer.stop();
+				timeDisplay.pauseTimer();
 				break;
 			case PAUSED:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
 				user.togglePauseTask(taskName);
-				timeDisplay.timer.start();
+				timeDisplay.startTimer();
 				break;
 			default:
 				break;
