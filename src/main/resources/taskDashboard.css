@@ -13,44 +13,38 @@
 	-fx-graphic: url("images/new_task.png"); 
 }
 
-#playBtn {
+#playBtn, #stopBtn, #removeBtn {
 	-fx-background-color: transparent;
 	-fx-pref-height: 50px;
 	-fx-pref-width: 50px;
-    
-    	/*sets button's image */
-	-fx-background-image: url("images/play.png"); 
+	
 	-fx-background-size: 50px 50px; 
 	-fx-background-repeat: no-repeat; 
 	-fx-background-position: center;  
+	
+}
+
+#playBtn {
+    	/*sets button's image */
+	-fx-background-image: url("images/play.png"); 
 }
 
 #stopBtn {
-	-fx-background-color: transparent;
-	-fx-pref-height: 50px;
-	-fx-pref-width: 50px;
-    
     	/*sets button's image */
 	-fx-background-image: url("images/stop.png"); 
-	-fx-background-size: 50px 50px; 
-	-fx-background-repeat: no-repeat; 
-	-fx-background-position: center;  
 }
 
 #removeBtn {
-	-fx-background-color: transparent;
-	-fx-pref-height: 50px;
-	-fx-pref-width: 50px;
-    
 	-fx-background-image: url("images/trashcan.png"); 
-	-fx-background-size: 50px 50px; 
-	-fx-background-repeat: no-repeat; 
-	-fx-background-position: center;  
 }
 
 
 #taskBox {
-	/*-fx-background-color: DARKSEAGREEN;*/
 	-fx-spacing: 30;
 	-fx-padding: 20;
+	
+	/** rounding corners: top left, top right, bottom right, bottom left */
+	-fx-border-radius: 10 10 10 10;
+	-fx-background-radius: 10 10 10 10;
+	
 }

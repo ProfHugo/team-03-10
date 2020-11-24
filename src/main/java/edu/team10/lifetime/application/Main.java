@@ -15,7 +15,7 @@ public class Main extends Application {
 	static TaskDashboard taskDb;
 	static SettingsPage settingsPage;
 	static Scene scene;
-	static String colorTheme;
+	static String currentColorTheme;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -30,7 +30,7 @@ public class Main extends Application {
 			
 			// allow scrolling
 			scrollpane = new ScrollPane();	
-			scrollpane.setContent(taskDb);
+			scrollpane.setContent(taskDb);		// shows task dashboard on default
 			root.setCenter(scrollpane);		// add scrollpane (containg task dashboard) to root
 			
 			scene = new Scene(root, 1280, 720);
@@ -40,9 +40,9 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/sidePanel.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/settingsPage.css").toExternalForm());
 			
-			//setColorTheme(getClass().getResource("/green.css").toExternalForm());
-			colorTheme = getClass().getResource("/green.css").toExternalForm();	// green theme on default
-			scene.getStylesheets().add(colorTheme);	
+			// set green theme as default
+			currentColorTheme = getClass().getResource("/green.css").toExternalForm();	
+			scene.getStylesheets().add(currentColorTheme);	
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -52,13 +52,13 @@ public class Main extends Application {
 	}
 	
 	// removes old color theme with new theme passed in through a String link to its CSS 
-	public static void setColorTheme(String url) {
+	public static void setColorTheme(String chosenTheme) {
 		// remove current color theme
-		scene.getStylesheets().remove(colorTheme);	
+		scene.getStylesheets().remove(currentColorTheme);	
 		
 		// add new
-		colorTheme = url;	// record this as current color theme
-		scene.getStylesheets().add(url);	
+		currentColorTheme = chosenTheme;	// record this as current color theme
+		scene.getStylesheets().add(chosenTheme);	
 	}
 
 	public static void main(String[] args) {

@@ -11,14 +11,12 @@ public class SidePanel extends VBox{
 		
 		SidePanelBtn taskBtn = new SidePanelBtn("Tasks");
 		taskBtn.setOnAction(e -> {
-			//Main.root.setCenter(Main.taskDb);
 			Main.scrollpane.setContent(Main.taskDb);
 		});
 	    
 		SidePanelBtn settingsBtn = new SidePanelBtn("Settings");
 	    settingsBtn.setId("settingsBtn");
 	    settingsBtn.setOnAction(e -> {
-	    	//Main.root.setCenter(Main.settingsPage);
 	    	Main.scrollpane.setContent(Main.settingsPage);
 	    });
 	    

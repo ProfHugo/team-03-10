@@ -18,7 +18,6 @@ public class SettingsPage extends VBox{
 		title = new Label("Settings");
 		title.setId("settingsPageTitle");
 		
-		//SettingBox colorSetting = makeColorSetting( );
 		ColorSettingBox colorSetting = new ColorSettingBox();
 		
 		this.getChildren().addAll(title, colorSetting);
