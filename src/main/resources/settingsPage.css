@@ -13,7 +13,7 @@
 	-fx-padding : 40;  
 }
 
-.settingBox {
+#colorSettingBox {
 	-fx-spacing: 20;
 }
 #greenBtn, #blueBtn {
@@ -23,6 +23,6 @@
 	-fx-background-color: DARKSEAGREEN;
 }
 #blueBtn {
-	-fx-background-color: POWDERBLUE;
+	-fx-background-color: CADETBLUE;
 
 }

@@ -150,6 +150,9 @@ public class TaskDashboard extends VBox {
 	/**
 	 * Check to see if this task name is valid. WIP
 	 * possible features: having character limit
+	 * have at least 1 char that isn't a space, 
+	 * name shouldn't start or end with a space ,
+	 * no more than 1 space in between words,
 	 * 
 	 * @param taskName
 	 * @return

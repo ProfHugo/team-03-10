@@ -1,7 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 
 .root {
-	-fx-font-family: "Comic Sans MS", cursive, sans-serif;
+	/*-fx-font-family: "Comic Sans MS", cursive, sans-serif;*/
+	-fx-font-family: "Courier New";
 }
 .button { 
 	-fx-focus-color: transparent;

@@ -1,6 +1,6 @@
 /**Side Panel */
 #sidePanel {
-	-fx-background-color: DARKSEAGREEN;
+	/*-fx-background-color: DARKSEAGREEN;*/
 	-fx-padding: 10;
 	-fx-pref-width: 150;
 }

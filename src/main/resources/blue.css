@@ -1,0 +1,5 @@
+/* Green color theme */
+
+#sidePanel, #taskBox {
+	-fx-background-color: CADETBLUE;
+}

@@ -50,7 +50,7 @@
 
 
 #taskBox {
-	-fx-background-color: DARKSEAGREEN;
+	/*-fx-background-color: DARKSEAGREEN;*/
 	-fx-spacing: 30;
 	-fx-padding: 20;
 }
