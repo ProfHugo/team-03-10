@@ -1,19 +1,19 @@
 /**Side Panel */
 #sidePanel {
-	/*-fx-background-color: DARKSEAGREEN;*/
-	-fx-padding: 10;
+	-fx-padding: 30 10 0 10; /*top, left, bottom, right*/
 	-fx-pref-width: 150;
 }
 .sidePanelBtn {
 	-fx-pref-height: 50px;
-	-fx-pref-width: 125;
+	-fx-pref-width: 150;
 	-fx-background-color: transparent;
 	
-	-fx-font-size: 15;
+	-fx-font-size: 18;
+	-fx-text-fill: BLACK;
 }
 #settingsBtn {
 	-fx-background-image: url("images/gearwheel.png"); 
-	-fx-background-size: 30px 30px; 
+	-fx-background-size: 25px 25px; 
 	-fx-background-repeat: no-repeat; 
 	-fx-background-position: left;  
 }
