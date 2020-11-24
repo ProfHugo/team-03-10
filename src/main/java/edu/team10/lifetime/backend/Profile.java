@@ -6,32 +6,33 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
- * A class representing a user. A user has a name and a set of tasks associated
+ * A class representing a user profile. A user has a name and a set of tasks associated
  * with them.
  * 
  * @author Hugo Wong
  *
  */
-public class User {
+public class Profile {
 
-	private HashSet<ITrigger> triggers;
+	private TriggerBus triggers;
+	
 	private TreeSet<Task> allTasks;
-	private String username;
+	private String profileName;
 	private DataRecord taskRecord;
 
-	public User(String username) {
-		this.triggers = new HashSet<>();
-		this.username = username;
+	public Profile(String username) {
+		this.triggers = new TriggerBus();
+		this.profileName = username;
 		this.allTasks = new TreeSet<>();
 		this.taskRecord = new DataRecord();
 	}
 
-	public String getUsername() {
-		return username;
+	public String getProfileName() {
+		return profileName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setProfilename(String profileName) {
+		this.profileName = profileName;
 	}
 
 	// The following are a set of responsibilities that may be pulled out onto other
@@ -139,7 +140,7 @@ public class User {
 	 * @return Whether or not this trigger was added successfully.
 	 */
 	public boolean addTrigger(ITrigger trigger) {
-		return this.triggers.add(trigger);
+		return triggers.addTrigger(trigger);
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class User {
 	 * @return Whether or not this trigger was removed successfully.
 	 */
 	public boolean removeTrigger(ITrigger trigger) {
-		return this.triggers.remove(trigger);
+		return triggers.removeTrigger(trigger);
 	}
 
 	/**
@@ -157,12 +158,7 @@ public class User {
 	 * attached to the trigger if it isn't already active.
 	 */
 	public void checkTriggers() {
-		for (ITrigger trigger : triggers) {
-			Task attachedTask = trigger.getAttachedTask();
-			if (trigger.checkForCondition() && this.allTasks.contains(attachedTask) && !attachedTask.isActive()) {
-				attachedTask.startTask();
-			}
-		}
+		triggers.checkTriggers(allTasks);
 	}
 
 	/**

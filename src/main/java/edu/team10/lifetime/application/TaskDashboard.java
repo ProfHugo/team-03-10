@@ -3,7 +3,7 @@ package edu.team10.lifetime.application;
 import java.util.Optional;
 
 import edu.team10.lifetime.backend.TaskState;
-import edu.team10.lifetime.backend.User;
+import edu.team10.lifetime.backend.Profile;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
@@ -14,13 +14,13 @@ import javafx.scene.text.Font;
 // displays a list of all tasks and a button to create new tasks
 public class TaskDashboard extends VBox {
 
-	private User user;
+	private Profile profile;
 
 	public TaskDashboard() {
 		super();
 		this.setId("taskDashboard"); // ID is used for css
 
-		user = new User("test");
+		profile = new Profile("default");
 
 		makeAddBtn();
 	}
@@ -42,15 +42,15 @@ public class TaskDashboard extends VBox {
 		dialog.setTitle("Text Input Dialog");
 		dialog.setHeaderText("Give a name for your task");
 
-		// get user input
+		// get profile input
 		Optional<String> result = dialog.showAndWait();
 
-		// display user input
+		// display profile input
 		result.ifPresent(taskName -> {
-			if (!user.hasTask(taskName)) {
+			if (!profile.hasTask(taskName)) {
 				this.displayTask(taskName);
 			} else {
-				// notify the user that the task already exists.
+				// notify the profile that the task already exists.
 				System.out.println("Warning: Task already exists.");
 			}
 		});
@@ -64,7 +64,7 @@ public class TaskDashboard extends VBox {
 	 */
 	public void displayTask(String taskName) {
 		// add task record to backend
-		user.addTask(taskName);
+		profile.addTask(taskName);
 
 		System.out.println(taskName);
 
@@ -84,21 +84,21 @@ public class TaskDashboard extends VBox {
 
 		// event handler
 		playBtn.setOnAction(event -> {
-			TaskState currentState = user.getTaskState(taskName);
+			TaskState currentState = profile.getTaskState(taskName);
 			switch (currentState) {
 			case INACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
-				user.startTask(taskName);
+				profile.startTask(taskName);
 				timeDisplay.startTimer();		
 				break;
 			case ACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
-				user.togglePauseTask(taskName);
+				profile.togglePauseTask(taskName);
 				timeDisplay.pauseTimer();
 				break;
 			case PAUSED:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
-				user.togglePauseTask(taskName);
+				profile.togglePauseTask(taskName);
 				timeDisplay.startTimer();
 				break;
 			default:
@@ -116,7 +116,7 @@ public class TaskDashboard extends VBox {
 		stopBtn.setOnAction(event -> {
 			timeDisplay.setText("Status: Stopped");
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
-			user.stopTask(taskName);
+			profile.stopTask(taskName);
 			timeDisplay.stopTimer();
 		});
 
@@ -140,7 +140,7 @@ public class TaskDashboard extends VBox {
 
 		// event handler: removes task
 		removeBtn.setOnAction(event -> {
-			user.removeTask(taskName); // removes task data
+			profile.removeTask(taskName); // removes task data
 			this.getChildren().remove(taskContainer); // removes display of task on dashboard
 		});
 
