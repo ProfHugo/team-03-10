@@ -18,19 +18,19 @@ public class ColorSettingBox extends HBox{
 		green = new Button();
 		green.setId("greenBtn");
 		green.setOnAction(e -> {
-			Main.setColorTheme(getClass().getResource("/green.css").toExternalForm());	// change to green
+			Main.changeColorTheme(getClass().getResource("/css/colors/green.css").toExternalForm());	
 		});
 		
 		blue = new Button();
 		blue.setId("blueBtn");
 		blue.setOnAction(e -> {
-			Main.setColorTheme(getClass().getResource("/blue.css").toExternalForm());
+			Main.changeColorTheme(getClass().getResource("/css/colors/blue.css").toExternalForm());
 		});
 		
 		orange = new Button();
 		orange.setId("orangeBtn");
 		orange.setOnAction(e -> {
-			Main.setColorTheme(getClass().getResource("/orange.css").toExternalForm());
+			Main.changeColorTheme(getClass().getResource("/css/colors/orange.css").toExternalForm());
 		});
 		
 		this.getChildren().addAll(settingName, green, blue, orange);

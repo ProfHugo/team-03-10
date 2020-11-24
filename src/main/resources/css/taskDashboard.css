@@ -10,7 +10,7 @@
 /** Buttons */
 
 #addBtn {
-	-fx-graphic: url("images/new_task.png"); 
+	-fx-graphic: url("../images/new_task.png"); 
 }
 
 #playBtn, #stopBtn, #removeBtn {
@@ -26,16 +26,16 @@
 
 #playBtn {
     	/*sets button's image */
-	-fx-background-image: url("images/play.png"); 
+	-fx-background-image: url("../images/play.png"); 
 }
 
 #stopBtn {
     	/*sets button's image */
-	-fx-background-image: url("images/stop.png"); 
+	-fx-background-image: url("../images/stop.png"); 
 }
 
 #removeBtn {
-	-fx-background-image: url("images/trashcan.png"); 
+	-fx-background-image: url("../images/trashcan.png"); 
 }
 
 

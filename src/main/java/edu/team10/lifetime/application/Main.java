@@ -35,13 +35,13 @@ public class Main extends Application {
 			
 			scene = new Scene(root, 1280, 720);
 			
-			scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
-			scene.getStylesheets().add(getClass().getResource("/taskDashboard.css").toExternalForm());
-			scene.getStylesheets().add(getClass().getResource("/sidePanel.css").toExternalForm());
-			scene.getStylesheets().add(getClass().getResource("/settingsPage.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/taskDashboard.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/sidePanel.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/settingsPage.css").toExternalForm());
 			
 			// set green theme as default
-			currentColorTheme = getClass().getResource("/green.css").toExternalForm();	
+			currentColorTheme = getClass().getResource("/css/colors/green.css").toExternalForm();	
 			scene.getStylesheets().add(currentColorTheme);	
 			
 			primaryStage.setScene(scene);
@@ -51,8 +51,8 @@ public class Main extends Application {
 		}
 	}
 	
-	// removes old color theme with new theme passed in through a String link to its CSS 
-	public static void setColorTheme(String chosenTheme) {
+	// replaces old color theme with new theme passed in as a link to its CSS 
+	public static void changeColorTheme(String chosenTheme) {
 		// remove current color theme
 		scene.getStylesheets().remove(currentColorTheme);	
 		
