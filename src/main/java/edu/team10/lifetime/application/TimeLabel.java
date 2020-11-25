@@ -11,11 +11,17 @@ import javafx.scene.control.Label;
 public class TimeLabel extends Label {
 	Task task;
 	Timer timer;
-	int seconds;
+	long seconds;
 	TimerTask incrementTask;
 	
 	public TimeLabel(String taskName) {
-		super(taskName);
+		super("0:00");
+		seconds = 0;
+	}
+	
+	public TimeLabel(Task task) {
+		super("0:00");
+		this.task = task;
 		seconds = 0;
 	}
 
@@ -37,14 +43,16 @@ public class TimeLabel extends Label {
 		};
 		timer.schedule(incrementTask, 0, 1000);
 		
-		//setVisibility(true);
+//		setVisibility(true);
+//		System.out.println("visible: " + getVisibility());
 	}
 
 	/**
 	 * Pause the timer.
 	 */
 	public void pauseTimer() {
-		//setVisibility(false);
+//		setVisibility(false);
+//		System.out.println("visible: " + getVisibility());
 		timer.cancel();
 	}
 	
@@ -57,11 +65,17 @@ public class TimeLabel extends Label {
 	}
 	
 	/** 
-	 * Make the timer invisible or visible 
+	 * Make the timer appear or disappear 
 	 * */
 	public void setVisibility(boolean value) {
-		this.setVisible(value);
-		this.setManaged(value);
+		setVisible(value);	// determines if it can be seen
+		setManaged(value);		// determines if it takes up space 
+	}
+	/**
+	 *  check whether the timer appears on the screen
+	 * */
+	public boolean getVisibility() {
+		return isManaged() && isVisible();
 	}
 
 }

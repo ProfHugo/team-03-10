@@ -1,6 +1,7 @@
 package edu.team10.lifetime.application;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -30,7 +31,7 @@ public class Main extends Application {
 			
 			// allow scrolling
 			scrollpane = new ScrollPane();	
-			scrollpane.setContent(taskDb);		// shows task dashboard on default
+			setPage(taskDb);		// shows task dashboard on default
 			root.setCenter(scrollpane);		// add scrollpane (containg task dashboard) to root
 			
 			scene = new Scene(root, 1280, 720);
@@ -59,6 +60,11 @@ public class Main extends Application {
 		// add new
 		currentColorTheme = chosenTheme;	// record this as current color theme
 		scene.getStylesheets().add(chosenTheme);	
+	}
+	
+	/** sets the content on the screen to display a given input page */
+	public static void setPage(Node content) {
+		scrollpane.setContent(content);
 	}
 
 	public static void main(String[] args) {

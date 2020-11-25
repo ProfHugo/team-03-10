@@ -7,34 +7,34 @@ import javafx.scene.layout.HBox;
 // displays buttons to change color theme of application
 public class ColorSettingBox extends HBox{
 	Label settingName;
-	Button green;
-	Button blue;
-	Button orange;
 	
 	public ColorSettingBox() {
 		this.setId("colorSettingBox");
+		
 		settingName = new Label("Color");
 		
-		green = new Button();
-		green.setId("greenBtn");
-		green.setOnAction(e -> {
-			Main.changeColorTheme(getClass().getResource("/css/colors/green.css").toExternalForm());	
-		});
+		// make buttons for each color theme
+		Button green = makeColorButton("green");
+		Button blue = makeColorButton("blue");
+		Button orange = makeColorButton("orange");
 		
-		blue = new Button();
-		blue.setId("blueBtn");
-		blue.setOnAction(e -> {
-			Main.changeColorTheme(getClass().getResource("/css/colors/blue.css").toExternalForm());
-		});
-		
-		orange = new Button();
-		orange.setId("orangeBtn");
-		orange.setOnAction(e -> {
-			Main.changeColorTheme(getClass().getResource("/css/colors/orange.css").toExternalForm());
-		});
-		
+		// add buttons to color setting display
 		this.getChildren().addAll(settingName, green, blue, orange);
 	}
 	
+	// makes a new button for a color
+	public Button makeColorButton(String colorName) {
+		Button colorBtn = new Button();	
+		colorBtn.setId(colorName + "Btn");	// for CSS styling
+		
+		// if button is clicked, change application's color theme 
+		colorBtn.setOnAction(e -> {
+			String url = getClass().getResource("/css/colors/" + colorName + ".css").toExternalForm();
+			// if the given color theme isn't already the current one, replace current with given
+			if (!Main.currentColorTheme.equals(url))
+				Main.changeColorTheme(url);	
+		});
+		return colorBtn;
+	}
 	
 }
