@@ -77,7 +77,7 @@ public class TaskDashboard extends VBox {
 
 		TimeLabel timeDisplay = new TimeLabel(taskName);		// live display of time
 		timeDisplay.setFont(new Font("Arial", 20));
-		//timeDisplay.setVisibility(false);	// invisible on default
+		Main.settingsPage.liveTimerSetting.timers.add(timeDisplay);		// to keep track of existing live timers
 
 		Button playBtn = new Button();
 		playBtn.setId("playBtn");
@@ -141,6 +141,11 @@ public class TaskDashboard extends VBox {
 		// event handler: removes task
 		removeBtn.setOnAction(event -> {
 			profile.removeTask(taskName); // removes task data
+			
+			//System.out.println("before:\t" + Main.settingsPage.liveTimerSetting.timers);
+			Main.settingsPage.liveTimerSetting.timers.remove(taskContainer.getChildren().get(1));	// remove live timer
+			//System.out.println("after:\t" + Main.settingsPage.liveTimerSetting.timers);
+			
 			this.getChildren().remove(taskContainer); // removes display of task on dashboard
 		});
 

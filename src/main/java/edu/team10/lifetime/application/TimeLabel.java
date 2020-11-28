@@ -16,6 +16,7 @@ public class TimeLabel extends Label {
 	
 	public TimeLabel(String taskName) {
 		super("0:00");
+		setVisibility(Main.settingsPage.liveTimerSetting.timersVisible);
 		seconds = 0;
 	}
 	

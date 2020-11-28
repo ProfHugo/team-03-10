@@ -1,5 +1,6 @@
 #settingsPage {
 	-fx-padding : 40;  
+	-fx-spacing: 30;
 }
 
 #settingsPageTitle {
@@ -9,7 +10,7 @@
 	-fx-padding: 0 0 40 40;
 }
 
-#colorSettingBox {
+#colorSettingBox, #liveTimerSetting {
 	-fx-spacing: 20;
 }
 #greenBtn, #blueBtn, #orangeBtn {

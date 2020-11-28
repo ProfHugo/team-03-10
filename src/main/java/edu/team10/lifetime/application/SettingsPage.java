@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 public class SettingsPage extends VBox{
 	
 	Label title;
+	LiveTimerSetting liveTimerSetting;
 	
 	public SettingsPage() {
 		super();
@@ -19,8 +20,9 @@ public class SettingsPage extends VBox{
 		title.setId("settingsPageTitle");
 		
 		ColorSettingBox colorSetting = new ColorSettingBox();
+		liveTimerSetting = new LiveTimerSetting(); 
 		
-		this.getChildren().addAll(title, colorSetting);
+		this.getChildren().addAll(title, colorSetting, liveTimerSetting.view);
 	}
 	
 	
