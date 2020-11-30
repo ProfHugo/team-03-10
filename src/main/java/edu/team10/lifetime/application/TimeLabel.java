@@ -16,13 +16,14 @@ public class TimeLabel extends Label {
 	
 	public TimeLabel(String taskName) {
 		super("0:00");
-		setVisibility(Main.settingsPage.liveTimerSetting.timersVisible);
+		setVisibility(Main.settings.liveTimerSetting.timersVisible);
 		seconds = 0;
 	}
 	
 	public TimeLabel(Task task) {
 		super("0:00");
 		this.task = task;
+		setVisibility(Main.settings.liveTimerSetting.timersVisible);
 		seconds = 0;
 	}
 
@@ -39,21 +40,17 @@ public class TimeLabel extends Label {
 					// format and display
 					long minutes = seconds / 60;
 					TimeLabel.this.setText(minutes + ":" + seconds % 60);
+					System.out.println(seconds);
 				});
 			}
 		};
 		timer.schedule(incrementTask, 0, 1000);
-		
-//		setVisibility(true);
-//		System.out.println("visible: " + getVisibility());
 	}
 
 	/**
 	 * Pause the timer.
 	 */
 	public void pauseTimer() {
-//		setVisibility(false);
-//		System.out.println("visible: " + getVisibility());
 		timer.cancel();
 	}
 	
@@ -61,8 +58,10 @@ public class TimeLabel extends Label {
 	 * Stop the timer.
 	 */
 	public void stopTimer() {
-		timer.cancel();
-		seconds = 0;
+		if(timer != null) {
+			timer.cancel();
+			seconds = 0;
+		}
 	}
 	
 	/** 

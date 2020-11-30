@@ -3,7 +3,8 @@
 	-fx-padding: 30 0 0 5; /*top, left, bottom, right*/
 	-fx-pref-width: 150;
 }
-.sidePanelBtn {
+/*side panel buttons */
+#taskDashboardBtn, #settingsBtn{
 	-fx-pref-height: 50px;
 	-fx-pref-width: 380;
 	-fx-background-color: transparent;
@@ -11,7 +12,7 @@
 	-fx-font-size: 18;
 	-fx-text-fill: BLACK;
 }
-.sidePanelBtn:hover {
+#taskDashboardBtn:hover, #settingsBtn:hover {
 	/*-fx-font-weight: bold;*/
 	-fx-font-size: 22;
 }

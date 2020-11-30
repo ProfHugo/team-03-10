@@ -75,9 +75,9 @@ public class TaskDashboard extends VBox {
 		Label name = new Label(taskName);
 		name.setFont(new Font("Arial", 28));
 
-		TimeLabel timeDisplay = new TimeLabel(taskName);		// live display of time
+		TimeLabel timeDisplay = new TimeLabel(profile.getTaskByName(taskName));		// live display of time
 		timeDisplay.setFont(new Font("Arial", 20));
-		Main.settingsPage.liveTimerSetting.timers.add(timeDisplay);		// to keep track of existing live timers
+		Main.settings.liveTimerSetting.timers.add(timeDisplay);		// to keep track of existing live timers
 
 		Button playBtn = new Button();
 		playBtn.setId("playBtn");
@@ -104,9 +104,6 @@ public class TaskDashboard extends VBox {
 			default:
 				break;
 			}
-			// if ()
-
-			System.out.println();
 		});
 
 		Button stopBtn = new Button();
@@ -114,7 +111,7 @@ public class TaskDashboard extends VBox {
 
 		// event handler
 		stopBtn.setOnAction(event -> {
-			timeDisplay.setText("Status: Stopped");
+			timeDisplay.setText("00:00");
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 			profile.stopTask(taskName);
 			timeDisplay.stopTimer();
@@ -142,9 +139,10 @@ public class TaskDashboard extends VBox {
 		removeBtn.setOnAction(event -> {
 			profile.removeTask(taskName); // removes task data
 			
-			//System.out.println("before:\t" + Main.settingsPage.liveTimerSetting.timers);
-			Main.settingsPage.liveTimerSetting.timers.remove(taskContainer.getChildren().get(1));	// remove live timer
-			//System.out.println("after:\t" + Main.settingsPage.liveTimerSetting.timers);
+			TimeLabel liveTimer = (TimeLabel) taskContainer.getChildren().get(1);
+			liveTimer.stopTimer();		// timer will stop running 
+			Main.settings.liveTimerSetting.timers.remove(liveTimer);	// remove live timer
+//			System.out.println("timer still there: "+Main.settings.liveTimerSetting.timers.contains(liveTimer));
 			
 			this.getChildren().remove(taskContainer); // removes display of task on dashboard
 		});

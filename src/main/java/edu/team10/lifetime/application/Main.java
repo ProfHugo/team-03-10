@@ -14,7 +14,7 @@ public class Main extends Application {
 	static ScrollPane scrollpane;
 	static SidePanel sidePanel;
 	static TaskDashboard taskDb;
-	static SettingsPage settingsPage;
+	static Settings settings;
 	static Scene scene;
 	static String currentColorTheme;
 	
@@ -24,10 +24,10 @@ public class Main extends Application {
 			root = new BorderPane();
 			
 			sidePanel = new SidePanel();
-			root.setLeft(sidePanel);
+			root.setLeft(sidePanel.view);
 
 			taskDb = new TaskDashboard();
-			settingsPage = new SettingsPage();
+			settings = new Settings();
 			
 			// allow scrolling
 			scrollpane = new ScrollPane();	
@@ -63,7 +63,7 @@ public class Main extends Application {
 	}
 	
 	/** sets the content on the screen to display a given input page */
-	public static void setPage(Node content) {
+	public static void setPage(VBox content) {
 		scrollpane.setContent(content);
 	}
 

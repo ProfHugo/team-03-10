@@ -4,12 +4,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-// displays buttons to change color theme of application
-public class ColorSettingBox extends HBox{
+/** controls color theme */
+public class ColorSetting {
 	Label settingName;
+	HBox view;
 	
-	public ColorSettingBox() {
-		this.setId("colorSettingBox");
+	public ColorSetting() {
+		view = new HBox();	// displays buttons to change color theme of application
+		view.setId("colorSettingBox"); 
 		
 		settingName = new Label("Color");
 		
@@ -19,7 +21,7 @@ public class ColorSettingBox extends HBox{
 		Button orange = makeColorButton("orange");
 		
 		// add buttons to color setting display
-		this.getChildren().addAll(settingName, green, blue, orange);
+		view.getChildren().addAll(settingName, green, blue, orange);
 	}
 	
 	// makes a new button for a color
