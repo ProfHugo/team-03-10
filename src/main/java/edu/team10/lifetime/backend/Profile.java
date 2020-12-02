@@ -5,6 +5,8 @@ import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+import edu.team10.lifetime.application.Settings;
+
 /**
  * A class representing a user profile. A user has a name and a set of tasks associated
  * with them.
@@ -168,4 +170,5 @@ public class Profile {
 	public DataRecord getTaskRecord() {
 		return taskRecord;
 	}
+	
 }

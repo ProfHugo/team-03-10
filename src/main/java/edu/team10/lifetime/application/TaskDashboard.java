@@ -4,7 +4,10 @@ import java.util.Optional;
 
 import edu.team10.lifetime.backend.TaskState;
 import edu.team10.lifetime.backend.Profile;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
@@ -66,8 +69,6 @@ public class TaskDashboard extends VBox {
 		// add task record to backend
 		profile.addTask(taskName);
 
-		System.out.println(taskName);
-
 		HBox taskContainer = new HBox();
 		taskContainer.setId("taskBox");
 
@@ -75,9 +76,13 @@ public class TaskDashboard extends VBox {
 		Label name = new Label(taskName);
 		name.setFont(new Font("Arial", 28));
 
-		TimeLabel timeDisplay = new TimeLabel(profile.getTaskByName(taskName));		// live display of time
+		Label status = new Label("Status: " + TaskState.INACTIVE.toString());
+		status.setFont(new Font("Arial", 20));
+		
+		TimeLabel timeDisplay = new TimeLabel(taskName); // live display of time
 		timeDisplay.setFont(new Font("Arial", 20));
-		Main.settings.liveTimerSetting.timers.add(timeDisplay);		// to keep track of existing live timers
+		
+		Main.settings.liveTimerSetting.timers.add(timeDisplay); // to keep track of existing live timers
 
 		Button playBtn = new Button();
 		playBtn.setId("playBtn");
@@ -88,16 +93,19 @@ public class TaskDashboard extends VBox {
 			switch (currentState) {
 			case INACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
+				status.setText("Status: " + TaskState.ACTIVE.toString());
 				profile.startTask(taskName);
-				timeDisplay.startTimer();		
+				timeDisplay.startTimer();
 				break;
 			case ACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
+				status.setText("Status: " + TaskState.PAUSED.toString());
 				profile.togglePauseTask(taskName);
 				timeDisplay.pauseTimer();
 				break;
 			case PAUSED:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
+				status.setText("Status: " + TaskState.ACTIVE.toString());
 				profile.togglePauseTask(taskName);
 				timeDisplay.startTimer();
 				break;
@@ -111,8 +119,9 @@ public class TaskDashboard extends VBox {
 
 		// event handler
 		stopBtn.setOnAction(event -> {
-			timeDisplay.setText("00:00");
+			timeDisplay.setText("00:00:00");
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
+			status.setText("Status: " + TaskState.INACTIVE.toString());
 			profile.stopTask(taskName);
 			timeDisplay.stopTimer();
 		});
@@ -120,7 +129,7 @@ public class TaskDashboard extends VBox {
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
 
 		// add labels and buttons to taskContainer
-		taskContainer.getChildren().addAll(playBtn, timeDisplay, name, stopBtn, removeBtn);
+		taskContainer.getChildren().addAll(playBtn, timeDisplay, name, status, stopBtn, removeBtn);
 
 		// adds taskContainer to dashboard display
 		this.getChildren().addAll(taskContainer);
@@ -130,32 +139,43 @@ public class TaskDashboard extends VBox {
 	// task name to identify task
 	// creates a button that removes the task from display when clicked
 	public Button makeRemoveBtn(HBox taskContainer, String taskName) {
-		// WIP: Pops up a prompt asking if the user really, really wants to remove the task
+		// WIP: Pops up a prompt asking if the user really, really wants to remove the
+		// task
 		// ALSO WIP: Handle delete when the task is active.
 		Button removeBtn = new Button();
 		removeBtn.setId("removeBtn"); // style
 
 		// event handler: removes task
 		removeBtn.setOnAction(event -> {
-			profile.removeTask(taskName); // removes task data
-			
-			TimeLabel liveTimer = (TimeLabel) taskContainer.getChildren().get(1);
-			liveTimer.stopTimer();		// timer will stop running 
-			Main.settings.liveTimerSetting.timers.remove(liveTimer);	// remove live timer
-//			System.out.println("timer still there: "+Main.settings.liveTimerSetting.timers.contains(liveTimer));
-			
-			this.getChildren().remove(taskContainer); // removes display of task on dashboard
+
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirmation");
+			alert.setHeaderText("Deleting " + taskName + " from Task Dashboard");
+			alert.setContentText("Are you sure you want to remove this task from your dashboard?");
+
+			// Verification Prompt
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK) {
+				profile.removeTask(taskName); // removes task data
+
+				TimeLabel liveTimer = (TimeLabel) taskContainer.getChildren().get(1);
+				liveTimer.stopTimer(); // timer will stop running
+				Main.settings.liveTimerSetting.timers.remove(liveTimer); // remove live timer
+				//System.out.println("timer still there: "+Main.settings.liveTimerSetting.timers.contains(liveTimer));
+				this.getChildren().remove(taskContainer); // removes display of task on dashboard
+			} else {
+				//do nothing
+			}
+
 		});
 
 		return removeBtn;
 	}
 
 	/**
-	 * Check to see if this task name is valid. WIP
-	 * possible features: having character limit
-	 * have at least 1 char that isn't a space, 
-	 * name shouldn't start or end with a space ,
-	 * no more than 1 space in between words,
+	 * Check to see if this task name is valid. WIP possible features: having
+	 * character limit have at least 1 char that isn't a space, name shouldn't start
+	 * or end with a space , no more than 1 space in between words,
 	 * 
 	 * @param taskName
 	 * @return

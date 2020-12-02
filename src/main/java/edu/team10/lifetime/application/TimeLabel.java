@@ -9,23 +9,15 @@ import javafx.scene.control.Label;
 
 // displays live time of how long the task has been going on
 public class TimeLabel extends Label {
-	Task task;
 	Timer timer;
-	long seconds;
+	long totalSeconds;
 	TimerTask incrementTask;
-	
+
 	public TimeLabel(String taskName) {
-		super("0:00");
-		setVisibility(Main.settings.liveTimerSetting.timersVisible);
-		seconds = 0;
+		super("00:00:00");
+		totalSeconds = 0;
 	}
-	
-	public TimeLabel(Task task) {
-		super("0:00");
-		this.task = task;
-		setVisibility(Main.settings.liveTimerSetting.timersVisible);
-		seconds = 0;
-	}
+
 
 	/**
 	 * Start the timer.
@@ -35,12 +27,13 @@ public class TimeLabel extends Label {
 		incrementTask = new TimerTask() {
 			@Override
 			public void run() {
-				seconds++;
+				totalSeconds++;
 				Platform.runLater(() -> {
 					// format and display
-					long minutes = seconds / 60;
-					TimeLabel.this.setText(minutes + ":" + seconds % 60);
-					System.out.println(seconds);
+					String minutes = formatTimeUnit(totalSeconds / 60);
+					String hours = formatTimeUnit(totalSeconds / 3600);
+					String seconds = formatTimeUnit(totalSeconds % 60);
+					TimeLabel.this.setText(hours + ":" + minutes + ":" + seconds);
 				});
 			}
 		};
@@ -53,29 +46,40 @@ public class TimeLabel extends Label {
 	public void pauseTimer() {
 		timer.cancel();
 	}
-	
+
 	/**
 	 * Stop the timer.
 	 */
 	public void stopTimer() {
-		if(timer != null) {
+		if (timer != null) {
 			timer.cancel();
-			seconds = 0;
+			totalSeconds = 0;
 		}
 	}
-	
-	/** 
-	 * Make the timer appear or disappear 
-	 * */
-	public void setVisibility(boolean value) {
-		setVisible(value);	// determines if it can be seen
-		setManaged(value);		// determines if it takes up space 
-	}
+
 	/**
-	 *  check whether the timer appears on the screen
-	 * */
+	 * Make the timer appear or disappear
+	 */
+	public void setVisibility(boolean value) {
+		setVisible(value); // determines if it can be seen
+		setManaged(value); // determines if it takes up space
+	}
+
+	/**
+	 * check whether the timer appears on the screen
+	 */
 	public boolean getVisibility() {
 		return isManaged() && isVisible();
+	}
+
+	/**
+	 * 
+	 * @param time
+	 * @return If the number is less than 10, return it with a 0 appended to it.
+	 *         Otherwise just return it as is as a string.
+	 */
+	public static String formatTimeUnit(long time) {
+		return time < 10 ? "0" + time : "" + time;
 	}
 
 }

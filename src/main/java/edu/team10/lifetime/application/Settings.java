@@ -30,4 +30,8 @@ public class Settings {
 		return view;
 	}
 	
+	public boolean isLiveTimerOn() {
+		return this.liveTimerSetting.isLifeTimerOn();
+	}
+	
 }

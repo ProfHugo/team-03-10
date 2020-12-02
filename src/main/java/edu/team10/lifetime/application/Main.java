@@ -27,6 +27,7 @@ public class Main extends Application {
 			root.setLeft(sidePanel.view);
 
 			taskDb = new TaskDashboard();
+
 			settings = new Settings();
 			
 			// allow scrolling

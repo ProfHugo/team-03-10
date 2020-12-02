@@ -9,7 +9,7 @@ public class TimeTrigger implements ITrigger {
 
 	@Override
 	public boolean checkForCondition() {
-		if (OffsetTime.now().equals(timeToTrigger)) {
+		if (OffsetTime.now().isEqual(timeToTrigger)) {
 			return true;
 		}
 		return false;
