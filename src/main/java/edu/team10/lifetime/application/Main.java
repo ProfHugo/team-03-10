@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +30,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			sidePanelInit();
 
 			profiles = new HashSet<>();
 
@@ -46,6 +46,8 @@ public class Main extends Application {
 				profiles.add(profile);
 				currentProfile = profile;
 			});
+			
+			sidePanelInit();
 
 			root = new BorderPane();
 			root.setLeft(sidePanel);
@@ -101,22 +103,21 @@ public class Main extends Application {
 		sidePanel.setId("sidePanel");
 
 		// make buttons that appear on side panel
-		// Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn",
-		// Main.taskDb);
 		Button taskDashboardBtn = new Button("Tasks");
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
 			Main.setPage(taskDb);
 		});
-//		System.out.println("settingsView: " + Main.settingsView);
-//	    System.out.println(Main.settingsView.view.getId());
-//		Button settingsBtn = makeSidePanelBtn("SettingsView", "settingsBtn", Main.settingsView.view);
-		Button settingsBtn = new Button("SettingsView");
+		
+		Button settingsBtn = new Button("Settings");
 		settingsBtn.setId("settingsBtn");
 		settingsBtn.setOnAction(e -> {
 			Main.setPage(settingsView);
 		});
-
+		
+//		Label accountName = new Label(currentProfile.getProfileName());	// displays which profile is being displayed
+//		accountName.setId("accountNameLabel");
+		
 		Button newAccountBtn = new Button("New\nAccount"); // allows user to add an account
 		newAccountBtn.setId("accountBtn");
 		newAccountBtn.setOnAction(e -> {

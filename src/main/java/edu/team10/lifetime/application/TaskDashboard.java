@@ -93,9 +93,11 @@ public class TaskDashboard extends VBox {
 			boolean isLiveTimerVisible = Boolean.parseBoolean(profile.getSetting("liveTimerVisible"));
 			if (isLiveTimerVisible) {
 				timeDisplay.setVisible(true);
+				timeDisplay.setManaged(true);
 				timeDisplay.setText(liveTimer.toString());
 			} else {
 				timeDisplay.setVisible(false);
+				timeDisplay.setManaged(false);
 			}
 		}));
 		timerUpdate.setCycleCount(Animation.INDEFINITE);
