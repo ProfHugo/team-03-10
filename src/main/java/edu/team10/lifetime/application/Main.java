@@ -1,34 +1,37 @@
 package edu.team10.lifetime.application;
 
+import edu.team10.lifetime.backend.Profile;
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	
-	static BorderPane root;
-	static ScrollPane scrollpane;
-	static SidePanel sidePanel;
-	static TaskDashboard taskDb;
-	static Settings settings;
 	static Scene scene;
 	static String currentColorTheme;
+	
+
+	private static BorderPane root;
+	private static ScrollPane scrollpane;
+	private static VBox taskDb, sidePanel, settingsView;
+	
+	private static Profile currentProfile;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			sidePanelInit();
+			currentProfile = new Profile("default");
+					
 			root = new BorderPane();
-			
-			sidePanel = new SidePanel();
-			root.setLeft(sidePanel.view);
+			root.setLeft(sidePanel);
 
-			taskDb = new TaskDashboard();
+			taskDb = new TaskDashboard(currentProfile);
 
-			settings = new Settings();
+			settingsView = new SettingsView(currentProfile);
 			
 			// allow scrolling
 			scrollpane = new ScrollPane();	
@@ -71,4 +74,68 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	public static void sidePanelInit() {
+		sidePanel = new VBox();
+		sidePanel.setId("sidePanel");
+		
+		// make buttons that appear on side panel 
+		//Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn", Main.taskDb);
+		Button taskDashboardBtn = new Button("Tasks");
+		taskDashboardBtn.setId("taskDashboardBtn");
+		taskDashboardBtn.setOnAction(e -> {
+			Main.setPage(taskDb);
+		});
+//		System.out.println("settingsView: " + Main.settingsView);
+//	    System.out.println(Main.settingsView.view.getId());
+//		Button settingsBtn = makeSidePanelBtn("SettingsView", "settingsBtn", Main.settingsView.view);
+		Button settingsBtn = new Button("SettingsView");
+	    settingsBtn.setId("settingsBtn");
+	    settingsBtn.setOnAction(e -> {
+	    	Main.setPage(settingsView);
+	    });
+	    
+	    sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn);
+	}
+	
+	public static void taskDbInit() {
+		sidePanel = new VBox();
+		sidePanel.setId("sidePanel");
+		
+		// make buttons that appear on side panel 
+		//Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn", Main.taskDb);
+		Button taskDashboardBtn = new Button("Tasks");
+		taskDashboardBtn.setId("taskDashboardBtn");
+		taskDashboardBtn.setOnAction(e -> {
+			Main.setPage(taskDb);
+		});
+//		System.out.println("settingsView: " + Main.settingsView);
+//	    System.out.println(Main.settingsView.view.getId());
+//		Button settingsBtn = makeSidePanelBtn("SettingsView", "settingsBtn", Main.settingsView.view);
+		Button settingsBtn = new Button("SettingsView");
+	    settingsBtn.setId("settingsBtn");
+	    settingsBtn.setOnAction(e -> {
+	    	Main.setPage(settingsView);
+	    });
+	    
+	    sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn);
+	}
+	
+	
+	
+	/** makes a button to be placed on the side panel */
+	public static Button makeSidePanelBtn(String btnDisplayName, String id, VBox destination) {
+		Button sidePanelBtn = new Button(btnDisplayName);
+		sidePanelBtn.setId(id);	// CSS styling
+		//System.out.println("constructor passed");
+		System.out.println(destination);
+		// will change application's center view when clicked
+		sidePanelBtn.setOnAction(e -> {
+	    	Main.setPage(destination);
+	    });
+		
+		return sidePanelBtn;
+	}
+	
+	
 }

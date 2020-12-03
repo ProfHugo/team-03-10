@@ -8,36 +8,29 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 
 // displays live time of how long the task has been going on
-public class TimeLabel extends Label {
+public class LiveTimer {
 	Timer timer;
-	long totalSeconds;
+	long totalCenti, lastPaused;
 	TimerTask incrementTask;
 
-	public TimeLabel(String taskName) {
-		super("00:00:00");
-		totalSeconds = 0;
+	public LiveTimer() {
+		totalCenti = 0;
+		lastPaused = 0;
 	}
-
 
 	/**
 	 * Start the timer.
 	 */
 	public void startTimer() {
+		totalCenti = lastPaused;
 		timer = new Timer();
 		incrementTask = new TimerTask() {
 			@Override
 			public void run() {
-				totalSeconds++;
-				Platform.runLater(() -> {
-					// format and display
-					String minutes = formatTimeUnit(totalSeconds / 60);
-					String hours = formatTimeUnit(totalSeconds / 3600);
-					String seconds = formatTimeUnit(totalSeconds % 60);
-					TimeLabel.this.setText(hours + ":" + minutes + ":" + seconds);
-				});
+				totalCenti++;
 			}
 		};
-		timer.schedule(incrementTask, 0, 1000);
+		timer.schedule(incrementTask, 0, 10);
 	}
 
 	/**
@@ -45,6 +38,7 @@ public class TimeLabel extends Label {
 	 */
 	public void pauseTimer() {
 		timer.cancel();
+		lastPaused = totalCenti;
 	}
 
 	/**
@@ -53,23 +47,9 @@ public class TimeLabel extends Label {
 	public void stopTimer() {
 		if (timer != null) {
 			timer.cancel();
-			totalSeconds = 0;
+			totalCenti = 0;
+			lastPaused = 0;
 		}
-	}
-
-	/**
-	 * Make the timer appear or disappear
-	 */
-	public void setVisibility(boolean value) {
-		setVisible(value); // determines if it can be seen
-		setManaged(value); // determines if it takes up space
-	}
-
-	/**
-	 * check whether the timer appears on the screen
-	 */
-	public boolean getVisibility() {
-		return isManaged() && isVisible();
 	}
 
 	/**
@@ -80,6 +60,14 @@ public class TimeLabel extends Label {
 	 */
 	public static String formatTimeUnit(long time) {
 		return time < 10 ? "0" + time : "" + time;
+	}
+
+	public String toString() {
+		long totalSeconds = totalCenti / 100;
+		String minutes = formatTimeUnit(totalSeconds / 60);
+		String hours = formatTimeUnit(totalSeconds / 3600);
+		String seconds = formatTimeUnit(totalSeconds % 60);
+		return hours + ":" + minutes + ":" + seconds;
 	}
 
 }

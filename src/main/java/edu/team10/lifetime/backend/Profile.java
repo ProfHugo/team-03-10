@@ -2,10 +2,10 @@ package edu.team10.lifetime.backend;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
-import edu.team10.lifetime.application.Settings;
 
 /**
  * A class representing a user profile. A user has a name and a set of tasks associated
@@ -22,11 +22,17 @@ public class Profile {
 	private String profileName;
 	private DataRecord taskRecord;
 
+	private Settings settings;
+	
 	public Profile(String username) {
 		this.triggers = new TriggerBus();
 		this.profileName = username;
 		this.allTasks = new TreeSet<>();
 		this.taskRecord = new DataRecord();
+		Map<String, String> settings = new HashMap<>();
+		settings.put("liveTimerVisible", "true");
+		settings.put("colorScheme", "green");
+		this.settings = new Settings(settings);
 	}
 
 	public String getProfileName() {
@@ -35,6 +41,25 @@ public class Profile {
 
 	public void setProfilename(String profileName) {
 		this.profileName = profileName;
+	}
+	
+	/**
+	 * @param settingName
+	 * @return The value associated with the given setting name.
+	 */
+	public String getSetting(String settingName) {
+		return settings.getSettingValue(settingName);
+	}
+	
+	/**
+	 * Set the setting associated with the given name to this value. If this setting
+	 * does not previously exists, make a new entry containing this pair.
+	 * 
+	 * @param settingName
+	 * @param newValue
+	 */
+	public void changeSetting(String settingName, String newValue) {
+		settings.changeSettingValue(settingName, newValue);
 	}
 
 	// The following are a set of responsibilities that may be pulled out onto other
@@ -133,6 +158,7 @@ public class Profile {
 		DataEntry entry = new DataEntry(taskName, LocalTime.from(task.getStartTime().atZone(ZoneId.systemDefault())),
 				LocalTime.from(task.getStopTime().atZone(ZoneId.systemDefault())), task.getTimeElapsed());
 		this.taskRecord.addToRecord(entry);
+		System.out.println(entry.toString());
 		return !task.isActive();
 	}
 

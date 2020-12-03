@@ -4,6 +4,9 @@ import java.util.Optional;
 
 import edu.team10.lifetime.backend.TaskState;
 import edu.team10.lifetime.backend.Profile;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -13,17 +16,18 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 // displays a list of all tasks and a button to create new tasks
 public class TaskDashboard extends VBox {
 
 	private Profile profile;
 
-	public TaskDashboard() {
+	public TaskDashboard(Profile profile) {
 		super();
 		this.setId("taskDashboard"); // ID is used for css
 
-		profile = new Profile("default");
+		this.profile = profile;
 
 		makeAddBtn();
 	}
@@ -57,7 +61,6 @@ public class TaskDashboard extends VBox {
 				System.out.println("Warning: Task already exists.");
 			}
 		});
-
 	}
 
 	/**
@@ -79,10 +82,22 @@ public class TaskDashboard extends VBox {
 		Label status = new Label("Status: " + TaskState.INACTIVE.toString());
 		status.setFont(new Font("Arial", 20));
 		
-		TimeLabel timeDisplay = new TimeLabel(taskName); // live display of time
+		// Live Timer Display
+		Label timeDisplay = new Label("00:00:00"); // live display of time
 		timeDisplay.setFont(new Font("Arial", 20));
+		LiveTimer liveTimer = new LiveTimer();
+		Timeline timerUpdate = new Timeline(new KeyFrame(Duration.millis(200), event -> {
+			boolean isLiveTimerVisible = Boolean.parseBoolean(profile.getSetting("liveTimerVisible"));
+			if (isLiveTimerVisible) {
+				timeDisplay.setVisible(true);
+				timeDisplay.setText(liveTimer.toString());
+			} else {
+				timeDisplay.setVisible(false);
+			}
+			}));
+		timerUpdate.setCycleCount(Animation.INDEFINITE);
+		timerUpdate.play();
 		
-		Main.settings.liveTimerSetting.timers.add(timeDisplay); // to keep track of existing live timers
 
 		Button playBtn = new Button();
 		playBtn.setId("playBtn");
@@ -95,19 +110,20 @@ public class TaskDashboard extends VBox {
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
 				status.setText("Status: " + TaskState.ACTIVE.toString());
 				profile.startTask(taskName);
-				timeDisplay.startTimer();
+				liveTimer.startTimer();
+				
 				break;
 			case ACTIVE:
 				playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 				status.setText("Status: " + TaskState.PAUSED.toString());
 				profile.togglePauseTask(taskName);
-				timeDisplay.pauseTimer();
+				liveTimer.pauseTimer();
 				break;
 			case PAUSED:
 				playBtn.setStyle("-fx-background-image: url(\"images/pause.png\"); ");
 				status.setText("Status: " + TaskState.ACTIVE.toString());
 				profile.togglePauseTask(taskName);
-				timeDisplay.startTimer();
+				liveTimer.startTimer();
 				break;
 			default:
 				break;
@@ -119,11 +135,10 @@ public class TaskDashboard extends VBox {
 
 		// event handler
 		stopBtn.setOnAction(event -> {
-			timeDisplay.setText("00:00:00");
+			liveTimer.stopTimer();
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 			status.setText("Status: " + TaskState.INACTIVE.toString());
 			profile.stopTask(taskName);
-			timeDisplay.stopTimer();
 		});
 
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
@@ -156,12 +171,21 @@ public class TaskDashboard extends VBox {
 			// Verification Prompt
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK) {
+				TaskState currentState = profile.getTaskState(taskName);
+				
+				// Stop the task first before removing if it's currently active.
+				if (currentState.equals(TaskState.ACTIVE) || currentState.equals(TaskState.PAUSED)) {
+					profile.stopTask(taskName);
+				}
+				
 				profile.removeTask(taskName); // removes task data
 
+				/**
 				TimeLabel liveTimer = (TimeLabel) taskContainer.getChildren().get(1);
 				liveTimer.stopTimer(); // timer will stop running
-				Main.settings.liveTimerSetting.timers.remove(liveTimer); // remove live timer
-				//System.out.println("timer still there: "+Main.settings.liveTimerSetting.timers.contains(liveTimer));
+				Main.settingsView.liveTimerSetting.timers.remove(liveTimer); // remove live timer
+				**/
+				//System.out.println("timer still there: "+Main.settingsView.liveTimerSetting.timers.contains(liveTimer));
 				this.getChildren().remove(taskContainer); // removes display of task on dashboard
 			} else {
 				//do nothing

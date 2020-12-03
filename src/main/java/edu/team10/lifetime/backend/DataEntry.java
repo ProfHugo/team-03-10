@@ -82,7 +82,9 @@ public class DataEntry {
 		this.elapsedTime = elapsedTime;
 	}
 	
-	
+	public String toString() {
+		return String.format("Task Name: %s\nStart Time: %s\nEnd Time: %s\nElapsed Time: %s\n\n", taskName, startTime.toString(), endTime.toString(), elapsedTime.toString());
+	}
 	
 	
 }
