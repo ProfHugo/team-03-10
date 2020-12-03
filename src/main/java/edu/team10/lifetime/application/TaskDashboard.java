@@ -223,7 +223,6 @@ public class TaskDashboard extends VBox {
 		Set<Node> allTaskContainers = this.lookupAll("#taskBox");
 		this.getChildren().removeAll(allTaskContainers);
 
-		System.out.println(this.getChildren().toString());
 		// Replace the profile.
 		this.profile = newProfile;
 
