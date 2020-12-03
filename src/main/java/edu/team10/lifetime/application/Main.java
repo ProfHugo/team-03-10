@@ -1,10 +1,16 @@
 package edu.team10.lifetime.application;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import edu.team10.lifetime.backend.Profile;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -19,12 +25,16 @@ public class Main extends Application {
 	private static VBox taskDb, sidePanel, settingsView;
 	
 	private static Profile currentProfile;
+	static Set<Profile> profiles;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			sidePanelInit();
+			
 			currentProfile = new Profile("default");
+			profiles = new HashSet<>();
+			profiles.add(currentProfile);
 					
 			root = new BorderPane();
 			root.setLeft(sidePanel);
@@ -95,7 +105,42 @@ public class Main extends Application {
 	    	Main.setPage(settingsView);
 	    });
 	    
-	    sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn);
+	    Button newAccountBtn = new Button("New\nAccount");		// allows user to add an account
+		newAccountBtn.setId("accountBtn");
+		newAccountBtn.setOnAction(e -> {
+			TextInputDialog popUp = new TextInputDialog("account name");
+			popUp.setTitle("New Account");
+			popUp.setHeaderText("Give a name for your account");
+
+			// get profile input
+			Optional<String> result = popUp.showAndWait();
+			
+			result.ifPresent(profileName -> {
+				// TODO  create new profile
+				Profile profile = new Profile(profileName);
+				profiles.add(profile);
+			});
+		});
+		
+		Button chooseAccountBtn = new Button("Switch\nAccount");	// allows user to change account being displayed
+		chooseAccountBtn.setId("accountBtn");
+		chooseAccountBtn.setOnAction(e -> {
+			ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles); 
+			popUp.setTitle("Profile Choices");
+			popUp.setHeaderText("choose an account"); 
+			popUp.setContentText("accounts: ");
+			
+			Optional<Profile> result = popUp.showAndWait();
+					
+			result.ifPresent(profileChosen -> {
+				// display chosen profile
+				((TaskDashboard) taskDb).setProfile(profileChosen);
+				((SettingsView) settingsView).setProfile(profileChosen);
+			});
+			});
+		
+	    
+	    sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn, chooseAccountBtn, newAccountBtn);
 	}
 	
 	public static void taskDbInit() {

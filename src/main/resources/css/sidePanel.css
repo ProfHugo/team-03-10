@@ -4,7 +4,16 @@
 	-fx-pref-width: 150;
 }
 /*side panel buttons */
-#taskDashboardBtn, #settingsBtn{
+#taskDashboardBtn, #settingsBtn {
+	-fx-pref-height: 50px;
+	
+}
+#accountBtn {
+	-fx-pref-height: 75px;
+	-fx-text-alignment: center;
+}
+#taskDashboardBtn, #settingsBtn, #accountBtn{
+	-fx-pref-width: 380;
 	-fx-pref-height: 50px;
 	-fx-pref-width: 380;
 	-fx-background-color: transparent;

@@ -18,7 +18,7 @@ public class SettingsView extends VBox {
 		this.setId("settingsPage");
 		this.currentProfile = currentProfile;
 		
-		title = new Label("SettingsView");
+		title = new Label("Settings");
 		title.setId("settingsPageTitle");
 		
 		initColorSettings();

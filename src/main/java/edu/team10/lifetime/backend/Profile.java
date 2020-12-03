@@ -210,4 +210,9 @@ public class Profile {
 		return taskRecord;
 	}
 	
+	@Override
+	public String toString() {
+		return this.profileName;
+	}
+	
 }
