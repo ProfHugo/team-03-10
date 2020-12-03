@@ -128,9 +128,19 @@ public class Main extends Application {
 			Optional<String> result = popUp.showAndWait();
 
 			result.ifPresent(profileName -> {
-				// TODO create new profile
-				Profile profile = new Profile(profileName);
-				profiles.add(profile);
+				boolean profileExists = false;
+				
+				for (Profile p : profiles) {
+					if (p.getProfileName().equals(profileName)) {
+						profileExists = true;
+						break;
+					}
+				}
+				
+				if (!profileExists) {
+					Profile profile = new Profile(profileName);
+					profiles.add(profile);
+				}
 			});
 		});
 
@@ -140,7 +150,7 @@ public class Main extends Application {
 			ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
 			popUp.setTitle("Profile Choices");
 			popUp.setHeaderText("Choose an account");
-			popUp.setContentText("accounts: ");
+			popUp.setContentText("Accounts: ");
 
 			Optional<Profile> result = popUp.showAndWait();
 
