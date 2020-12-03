@@ -220,9 +220,10 @@ public class TaskDashboard extends VBox {
 		}
 
 		// Flush the task dashboard.
-		Set<Node> allTaskContainers = this.lookupAll("taskBox");
+		Set<Node> allTaskContainers = this.lookupAll("#taskBox");
 		this.getChildren().removeAll(allTaskContainers);
 
+		System.out.println(this.getChildren().toString());
 		// Replace the profile.
 		this.profile = newProfile;
 

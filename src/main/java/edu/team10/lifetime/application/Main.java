@@ -18,64 +18,75 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	static Scene scene;
 	static String currentColorTheme;
-	
 
 	private static BorderPane root;
 	private static ScrollPane scrollpane;
 	private static VBox taskDb, sidePanel, settingsView;
-	
+
 	private static Profile currentProfile;
 	static Set<Profile> profiles;
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			sidePanelInit();
-			
-			currentProfile = new Profile("default");
+
 			profiles = new HashSet<>();
-			profiles.add(currentProfile);
-					
+
+			TextInputDialog popUp = new TextInputDialog("Account Name");
+			popUp.setTitle("Initial New Account");
+			popUp.setHeaderText("Give a name for your account");
+
+			// get profile input
+			Optional<String> result = popUp.showAndWait();
+
+			result.ifPresent(profileName -> {
+				// TODO create new profile
+				Profile profile = new Profile(profileName);
+				profiles.add(profile);
+				currentProfile = profile;
+			});
+
 			root = new BorderPane();
 			root.setLeft(sidePanel);
 
 			taskDb = new TaskDashboard(currentProfile);
 
 			settingsView = new SettingsView(currentProfile);
-			
+
 			// allow scrolling
-			scrollpane = new ScrollPane();	
-			setPage(taskDb);		// shows task dashboard on default
-			root.setCenter(scrollpane);		// add scrollpane (containg task dashboard) to root
-			
+			scrollpane = new ScrollPane();
+			setPage(taskDb); // shows task dashboard on default
+			root.setCenter(scrollpane); // add scrollpane (containg task dashboard) to root
+
 			scene = new Scene(root, 1280, 720);
-			
+
 			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/taskDashboard.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/sidePanel.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/settingsPage.css").toExternalForm());
-			
+
 			// set green theme as default
-			currentColorTheme = getClass().getResource("/css/colors/green.css").toExternalForm();	
-			scene.getStylesheets().add(currentColorTheme);	
-			
+			currentColorTheme = getClass().getResource("/css/colors/green.css").toExternalForm();
+			scene.getStylesheets().add(currentColorTheme);
+
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	// replaces old color theme with new theme passed in as a link to its CSS 
+
+	// replaces old color theme with new theme passed in as a link to its CSS
 	public static void changeColorTheme(String chosenTheme) {
 		// remove current color theme
-		scene.getStylesheets().remove(currentColorTheme);	
-		
+		scene.getStylesheets().remove(currentColorTheme);
+
 		// add new
-		currentColorTheme = chosenTheme;	// record this as current color theme
-		scene.getStylesheets().add(chosenTheme);	
+		currentColorTheme = chosenTheme; // record this as current color theme
+		scene.getStylesheets().add(chosenTheme);
 	}
-	
+
 	/** sets the content on the screen to display a given input page */
 	public static void setPage(VBox content) {
 		scrollpane.setContent(content);
@@ -84,13 +95,14 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	public static void sidePanelInit() {
 		sidePanel = new VBox();
 		sidePanel.setId("sidePanel");
-		
-		// make buttons that appear on side panel 
-		//Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn", Main.taskDb);
+
+		// make buttons that appear on side panel
+		// Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn",
+		// Main.taskDb);
 		Button taskDashboardBtn = new Button("Tasks");
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
@@ -100,12 +112,12 @@ public class Main extends Application {
 //	    System.out.println(Main.settingsView.view.getId());
 //		Button settingsBtn = makeSidePanelBtn("SettingsView", "settingsBtn", Main.settingsView.view);
 		Button settingsBtn = new Button("SettingsView");
-	    settingsBtn.setId("settingsBtn");
-	    settingsBtn.setOnAction(e -> {
-	    	Main.setPage(settingsView);
-	    });
-	    
-	    Button newAccountBtn = new Button("New\nAccount");		// allows user to add an account
+		settingsBtn.setId("settingsBtn");
+		settingsBtn.setOnAction(e -> {
+			Main.setPage(settingsView);
+		});
+
+		Button newAccountBtn = new Button("New\nAccount"); // allows user to add an account
 		newAccountBtn.setId("accountBtn");
 		newAccountBtn.setOnAction(e -> {
 			TextInputDialog popUp = new TextInputDialog("account name");
@@ -114,41 +126,45 @@ public class Main extends Application {
 
 			// get profile input
 			Optional<String> result = popUp.showAndWait();
-			
+
 			result.ifPresent(profileName -> {
-				// TODO  create new profile
+				// TODO create new profile
 				Profile profile = new Profile(profileName);
 				profiles.add(profile);
 			});
 		});
-		
-		Button chooseAccountBtn = new Button("Switch\nAccount");	// allows user to change account being displayed
+
+		Button chooseAccountBtn = new Button("Switch\nAccount"); // allows user to change account being displayed
 		chooseAccountBtn.setId("accountBtn");
 		chooseAccountBtn.setOnAction(e -> {
-			ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles); 
+			ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
 			popUp.setTitle("Profile Choices");
-			popUp.setHeaderText("choose an account"); 
+			popUp.setHeaderText("Choose an account");
 			popUp.setContentText("accounts: ");
-			
+
 			Optional<Profile> result = popUp.showAndWait();
-					
+
 			result.ifPresent(profileChosen -> {
-				// display chosen profile
-				((TaskDashboard) taskDb).setProfile(profileChosen);
-				((SettingsView) settingsView).setProfile(profileChosen);
+				if (!profileChosen.equals(currentProfile)) {
+					// display chosen profile
+					((TaskDashboard) taskDb).setProfile(profileChosen);
+					((SettingsView) settingsView).setProfile(profileChosen);
+					profiles.add(profileChosen);
+					currentProfile = profileChosen;
+				}
 			});
-			});
-		
-	    
-	    sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn, chooseAccountBtn, newAccountBtn);
+		});
+
+		sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn, chooseAccountBtn, newAccountBtn);
 	}
-	
+
 	public static void taskDbInit() {
 		sidePanel = new VBox();
 		sidePanel.setId("sidePanel");
-		
-		// make buttons that appear on side panel 
-		//Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn", Main.taskDb);
+
+		// make buttons that appear on side panel
+		// Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn",
+		// Main.taskDb);
 		Button taskDashboardBtn = new Button("Tasks");
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
@@ -158,29 +174,26 @@ public class Main extends Application {
 //	    System.out.println(Main.settingsView.view.getId());
 //		Button settingsBtn = makeSidePanelBtn("SettingsView", "settingsBtn", Main.settingsView.view);
 		Button settingsBtn = new Button("SettingsView");
-	    settingsBtn.setId("settingsBtn");
-	    settingsBtn.setOnAction(e -> {
-	    	Main.setPage(settingsView);
-	    });
-	    
-	    sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn);
+		settingsBtn.setId("settingsBtn");
+		settingsBtn.setOnAction(e -> {
+			Main.setPage(settingsView);
+		});
+
+		sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn);
 	}
-	
-	
-	
+
 	/** makes a button to be placed on the side panel */
 	public static Button makeSidePanelBtn(String btnDisplayName, String id, VBox destination) {
 		Button sidePanelBtn = new Button(btnDisplayName);
-		sidePanelBtn.setId(id);	// CSS styling
-		//System.out.println("constructor passed");
+		sidePanelBtn.setId(id); // CSS styling
+		// System.out.println("constructor passed");
 		System.out.println(destination);
 		// will change application's center view when clicked
 		sidePanelBtn.setOnAction(e -> {
-	    	Main.setPage(destination);
-	    });
-		
+			Main.setPage(destination);
+		});
+
 		return sidePanelBtn;
 	}
-	
-	
+
 }
