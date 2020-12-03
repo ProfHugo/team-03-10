@@ -87,4 +87,18 @@ public class SettingsView extends VBox {
 		return getClass().getResource("/css/colors/" + colorName + ".css").toExternalForm();
 	}
 	
+	/**
+	 * Replace the profile, updating as nessasary. 
+	 * @param newProfile
+	 */
+	public void setProfile(Profile newProfile) {
+		this.currentProfile = newProfile;
+		
+		// update the color scheme
+		String url = getColorResource(currentProfile.getSetting("colorScheme"));
+		if (!Main.currentColorTheme.equals(url))
+			Main.changeColorTheme(url);	
+
+	}
+	
 }

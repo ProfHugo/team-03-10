@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 
@@ -67,10 +68,22 @@ public class Profile {
 
 	/**
 	 * 
-	 * @return The internet set of all tasks. Avoid if possible?
+	 * @return The set of all tasks. Avoid if possible?
 	 */
 	public TreeSet<Task> getAllTasks() {
 		return this.allTasks;
+	}
+	
+	/**
+	 * 
+	 * @return The set of all task names.
+	 */
+	public TreeSet<String> getAllTaskNames() {
+		TreeSet<String> taskNames = new TreeSet<>();
+		for (Task t : allTasks) {
+			taskNames.add(t.getName());
+		}
+		return taskNames;
 	}
 
 	/**
