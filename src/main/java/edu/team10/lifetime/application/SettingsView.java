@@ -1,6 +1,6 @@
 package edu.team10.lifetime.application;
 
-import edu.team10.lifetime.backend.Profile;
+import edu.team10.lifetime.core.Profile;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

@@ -1,11 +1,7 @@
-package edu.team10.lifetime.application;
+package edu.team10.lifetime.util;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import edu.team10.lifetime.backend.Task;
-import javafx.application.Platform;
-import javafx.scene.control.Label;
 
 // displays live time of how long the task has been going on
 public class LiveTimer {

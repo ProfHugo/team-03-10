@@ -1,6 +1,9 @@
-package edu.team10.lifetime.backend;
+package edu.team10.lifetime.core;
 
 import java.time.OffsetTime;
+
+import edu.team10.lifetime.util.ITrigger;
+import edu.team10.lifetime.util.Task;
 
 public class TimeTrigger implements ITrigger {
 

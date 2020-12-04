@@ -1,4 +1,4 @@
-package edu.team10.lifetime.backend;
+package edu.team10.lifetime.util;
 
 public interface ITrigger {
 	

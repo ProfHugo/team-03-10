@@ -1,7 +1,10 @@
-package edu.team10.lifetime.backend;
+package edu.team10.lifetime.core;
 
 import java.util.Collection;
 import java.util.HashSet;
+
+import edu.team10.lifetime.util.ITrigger;
+import edu.team10.lifetime.util.Task;
 
 /**
  * This class acts as an aggregator and processor of triggers.

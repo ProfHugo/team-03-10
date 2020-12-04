@@ -1,4 +1,4 @@
-package edu.team10.lifetime.backend;
+package edu.team10.lifetime.util;
 
 /**
  * This enum pack represents a set of states which a task can be in at any given

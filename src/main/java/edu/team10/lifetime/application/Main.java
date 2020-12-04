@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import edu.team10.lifetime.backend.Profile;
+import edu.team10.lifetime.core.Profile;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

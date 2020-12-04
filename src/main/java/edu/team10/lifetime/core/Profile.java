@@ -1,4 +1,4 @@
-package edu.team10.lifetime.backend;
+package edu.team10.lifetime.core;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -6,6 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import edu.team10.lifetime.backend.DataEntry;
+import edu.team10.lifetime.backend.DataRecord;
+import edu.team10.lifetime.util.ITrigger;
+import edu.team10.lifetime.util.Settings;
+import edu.team10.lifetime.util.Task;
+import edu.team10.lifetime.util.TaskState;
 
 
 /**

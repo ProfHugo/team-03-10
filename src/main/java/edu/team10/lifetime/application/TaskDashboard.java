@@ -4,8 +4,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
-import edu.team10.lifetime.backend.Profile;
-import edu.team10.lifetime.backend.TaskState;
+import edu.team10.lifetime.core.Profile;
+import edu.team10.lifetime.util.LiveTimer;
+import edu.team10.lifetime.util.TaskState;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
