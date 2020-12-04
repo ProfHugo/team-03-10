@@ -16,7 +16,7 @@ public class SettingsView extends VBox {
 	public SettingsView(Profile currentProfile) {
 		super();
 		this.setId("settingsPage");
-		this.currentProfile = currentProfile;
+		this.setProfile(currentProfile);
 		
 		title = new Label("Settings");
 		title.setId("settingsPageTitle");
@@ -96,8 +96,7 @@ public class SettingsView extends VBox {
 		
 		// update the color scheme
 		String url = getColorResource(currentProfile.getSetting("colorScheme"));
-		if (!Main.currentColorTheme.equals(url))
-			Main.changeColorTheme(url);	
+		Main.changeColorTheme(url);
 
 	}
 	

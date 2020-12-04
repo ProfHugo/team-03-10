@@ -31,7 +31,7 @@ public class TaskDashboard extends VBox {
 		super();
 		this.setId("taskDashboard"); // ID is used for css
 
-		this.profile = profile;
+		this.setProfile(profile);
 
 		makeAddBtn();
 	}
@@ -210,16 +210,21 @@ public class TaskDashboard extends VBox {
 	 * @param newProfile
 	 */
 	public void setProfile(Profile newProfile) {
-		TreeSet<String> taskNames = profile.getAllTaskNames();
+		TreeSet<String> taskNames;
+		
+		// check if we're replacing an existing profile.
+		if (profile != null) {
+			taskNames = profile.getAllTaskNames();
 
-		// Stop all the current profile's tasks.
-		profile.stopAllActiveTasks();
+			// Stop all the current profile's tasks.
+			profile.stopAllActiveTasks();
 
-		// Flush the task dashboard.
-		Set<Node> allTaskContainers = this.lookupAll("#taskBox");
-		this.getChildren().removeAll(allTaskContainers);
-
-		// Replace the profile.
+			// Flush the task dashboard.
+			Set<Node> allTaskContainers = this.lookupAll("#taskBox");
+			this.getChildren().removeAll(allTaskContainers);
+		}
+		
+		// Replace or set the new profile.
 		this.profile = newProfile;
 
 		// Repopulate the task dashboard.

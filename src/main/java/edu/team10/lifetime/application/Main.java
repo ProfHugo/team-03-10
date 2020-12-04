@@ -36,28 +36,41 @@ public class Main extends Application {
 
 			saveManager = new SavefileManager();
 
+			sidePanelInit();
+
+			root = new BorderPane();
+			root.setLeft(sidePanel);
+			
+			scene = new Scene(root, 1280, 720);
+			
+			boolean loadSuccessful = false;
+
 			if (saveManager.saveFileExists()) {
 				// try loading the thing
 				profiles = saveManager.readFromSaveFile();
-				
-				// prompt for starting profile
-				ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
-				popUp.setTitle("Profile Choices");
-				popUp.setHeaderText("Choose a profile");
-				popUp.setContentText("Profiles: ");
+				if (profiles != null && profiles.size() > 0) {
+					// prompt for starting profile
+					ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
+					popUp.setTitle("Profile Choices");
+					popUp.setHeaderText("Choose a profile");
+					popUp.setContentText("Profiles: ");
 
-				Optional<Profile> result = popUp.showAndWait();
-				
-				result.ifPresent(profileChosen -> {
-					currentProfile = profileChosen;
-				});
+					Optional<Profile> result = popUp.showAndWait();
 
-				if (!result.isPresent()) {
-					Profile profileChosen = profiles.iterator().next();
-					currentProfile = profileChosen;
+					result.ifPresent(profileChosen -> {
+						currentProfile = profileChosen;
+					});
+
+					if (!result.isPresent()) {
+						Profile profileChosen = profiles.iterator().next();
+						currentProfile = profileChosen;
+					}
+
+					loadSuccessful = currentProfile != null;
 				}
+			}
 
-			} else {
+			if (!loadSuccessful) {
 				TextInputDialog popUp = new TextInputDialog("Account Name");
 				popUp.setTitle("Initial New Account");
 				popUp.setHeaderText("Give a name for your account");
@@ -73,11 +86,6 @@ public class Main extends Application {
 				});
 			}
 
-			sidePanelInit();
-
-			root = new BorderPane();
-			root.setLeft(sidePanel);
-
 			taskDb = new TaskDashboard(currentProfile);
 
 			settingsView = new SettingsView(currentProfile);
@@ -87,7 +95,6 @@ public class Main extends Application {
 			setPage(taskDb); // shows task dashboard on default
 			root.setCenter(scrollpane); // add scrollpane (containg task dashboard) to root
 
-			scene = new Scene(root, 1280, 720);
 
 			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/taskDashboard.css").toExternalForm());
@@ -115,8 +122,11 @@ public class Main extends Application {
 
 	// replaces old color theme with new theme passed in as a link to its CSS
 	public static void changeColorTheme(String chosenTheme) {
-		// remove current color theme
-		scene.getStylesheets().remove(currentColorTheme);
+
+		if (currentColorTheme != null) {
+			// remove current color theme
+			scene.getStylesheets().remove(currentColorTheme);
+		}
 
 		// add new
 		currentColorTheme = chosenTheme; // record this as current color theme
