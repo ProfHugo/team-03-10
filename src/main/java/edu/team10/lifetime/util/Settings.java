@@ -1,5 +1,6 @@
 package edu.team10.lifetime.util;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ import java.util.Map;
  * @author Hugo Wong
  *
  */
-public class Settings {
+public class Settings implements Serializable {
+
+	private static final long serialVersionUID = -3548315197794107321L;
 
 	private Map<String, String> settings;
 

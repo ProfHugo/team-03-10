@@ -1,5 +1,6 @@
 package edu.team10.lifetime.core;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -12,8 +13,9 @@ import edu.team10.lifetime.util.Task;
  * @author Hugo Wong
  *
  */
-public class TriggerBus {
+public class TriggerBus implements Serializable {
 
+	private static final long serialVersionUID = 7739226075621597980L;
 	HashSet<ITrigger> triggers;
 	
 	public TriggerBus() {

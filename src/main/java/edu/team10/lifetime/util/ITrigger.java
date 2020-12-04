@@ -1,6 +1,8 @@
 package edu.team10.lifetime.util;
 
-public interface ITrigger {
+import java.io.Serializable;
+
+public interface ITrigger extends Serializable {
 	
 	/**
 	 * Check if the condition to fire this trigger is true.

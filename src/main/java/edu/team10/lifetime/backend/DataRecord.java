@@ -1,5 +1,6 @@
 package edu.team10.lifetime.backend;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -10,8 +11,9 @@ import java.util.LinkedList;
  * @author Hugo Wong
  *
  */
-public class DataRecord implements Iterable<DataEntry> {
+public class DataRecord implements Iterable<DataEntry>, Serializable {
 
+	private static final long serialVersionUID = -3570350698166388647L;
 	LinkedList<DataEntry> taskHistory;
 
 	public DataRecord() {

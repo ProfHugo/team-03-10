@@ -1,5 +1,6 @@
 package edu.team10.lifetime.util;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -10,11 +11,13 @@ import java.time.Instant;
  * @author Hugo Wong
  *
  */
-public class Task implements Comparable<Task> {
+public class Task implements Comparable<Task>, Serializable {
+
+	private static final long serialVersionUID = -9191132392187945199L;
 
 	private String name;
 
-	private Timer timer;
+	private transient Timer timer;
 
 	private TaskState currentState;
 

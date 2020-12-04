@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import edu.team10.lifetime.backend.SavefileManager;
 import edu.team10.lifetime.core.Profile;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.BorderPane;
@@ -26,6 +26,7 @@ public class Main extends Application {
 
 	private static Profile currentProfile;
 	static Set<Profile> profiles;
+	private SavefileManager saveManager;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -33,20 +34,45 @@ public class Main extends Application {
 
 			profiles = new HashSet<>();
 
-			TextInputDialog popUp = new TextInputDialog("Account Name");
-			popUp.setTitle("Initial New Account");
-			popUp.setHeaderText("Give a name for your account");
+			saveManager = new SavefileManager();
 
-			// get profile input
-			Optional<String> result = popUp.showAndWait();
+			if (saveManager.saveFileExists()) {
+				// try loading the thing
+				profiles = saveManager.readFromSaveFile();
+				
+				// prompt for starting profile
+				ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
+				popUp.setTitle("Profile Choices");
+				popUp.setHeaderText("Choose a profile");
+				popUp.setContentText("Profiles: ");
 
-			result.ifPresent(profileName -> {
-				// TODO create new profile
-				Profile profile = new Profile(profileName);
-				profiles.add(profile);
-				currentProfile = profile;
-			});
-			
+				Optional<Profile> result = popUp.showAndWait();
+				
+				result.ifPresent(profileChosen -> {
+					currentProfile = profileChosen;
+				});
+
+				if (!result.isPresent()) {
+					Profile profileChosen = profiles.iterator().next();
+					currentProfile = profileChosen;
+				}
+
+			} else {
+				TextInputDialog popUp = new TextInputDialog("Account Name");
+				popUp.setTitle("Initial New Account");
+				popUp.setHeaderText("Give a name for your account");
+
+				// get profile input
+				Optional<String> result = popUp.showAndWait();
+
+				result.ifPresent(profileName -> {
+					// TODO create new profile
+					Profile profile = new Profile(profileName);
+					profiles.add(profile);
+					currentProfile = profile;
+				});
+			}
+
 			sidePanelInit();
 
 			root = new BorderPane();
@@ -74,6 +100,14 @@ public class Main extends Application {
 
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
+			// save the current profiles on exit.
+			primaryStage.setOnCloseRequest(event -> {
+				for (Profile p : profiles) {
+					p.stopAllActiveTasks();
+				}
+				saveManager.save(profiles);
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,16 +142,16 @@ public class Main extends Application {
 		taskDashboardBtn.setOnAction(e -> {
 			Main.setPage(taskDb);
 		});
-		
+
 		Button settingsBtn = new Button("Settings");
 		settingsBtn.setId("settingsBtn");
 		settingsBtn.setOnAction(e -> {
 			Main.setPage(settingsView);
 		});
-		
+
 //		Label accountName = new Label(currentProfile.getProfileName());	// displays which profile is being displayed
 //		accountName.setId("accountNameLabel");
-		
+
 		Button newAccountBtn = new Button("New\nAccount"); // allows user to add an account
 		newAccountBtn.setId("accountBtn");
 		newAccountBtn.setOnAction(e -> {
@@ -130,14 +164,14 @@ public class Main extends Application {
 
 			result.ifPresent(profileName -> {
 				boolean profileExists = false;
-				
+
 				for (Profile p : profiles) {
 					if (p.getProfileName().equals(profileName)) {
 						profileExists = true;
 						break;
 					}
 				}
-				
+
 				if (!profileExists) {
 					Profile profile = new Profile(profileName);
 					profiles.add(profile);
@@ -145,13 +179,13 @@ public class Main extends Application {
 			});
 		});
 
-		Button chooseAccountBtn = new Button("Switch\nAccount"); // allows user to change account being displayed
+		Button chooseAccountBtn = new Button("Switch\nProfile"); // allows user to change account being displayed
 		chooseAccountBtn.setId("accountBtn");
 		chooseAccountBtn.setOnAction(e -> {
 			ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
 			popUp.setTitle("Profile Choices");
-			popUp.setHeaderText("Choose an account");
-			popUp.setContentText("Accounts: ");
+			popUp.setHeaderText("Choose a profile");
+			popUp.setContentText("Profiles: ");
 
 			Optional<Profile> result = popUp.showAndWait();
 
@@ -160,7 +194,6 @@ public class Main extends Application {
 					// display chosen profile
 					((TaskDashboard) taskDb).setProfile(profileChosen);
 					((SettingsView) settingsView).setProfile(profileChosen);
-					profiles.add(profileChosen);
 					currentProfile = profileChosen;
 				}
 			});

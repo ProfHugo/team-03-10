@@ -7,6 +7,8 @@ import edu.team10.lifetime.util.Task;
 
 public class TimeTrigger implements ITrigger {
 
+	private static final long serialVersionUID = 4975601686017051538L;
+	
 	private Task attachedTask;
 	private OffsetTime timeToTrigger;
 

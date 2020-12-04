@@ -1,5 +1,6 @@
 package edu.team10.lifetime.core;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -22,14 +23,15 @@ import edu.team10.lifetime.util.TaskState;
  * @author Hugo Wong
  *
  */
-public class Profile {
+public class Profile implements Serializable {
+
+	private static final long serialVersionUID = 7270946748470139194L;
 
 	private TriggerBus triggers;
 	
 	private TreeSet<Task> allTasks;
 	private String profileName;
 	private DataRecord taskRecord;
-
 	private Settings settings;
 	
 	public Profile(String username) {
@@ -168,14 +170,17 @@ public class Profile {
 	 * @return Whether or not the task ends successfully.
 	 */
 	public boolean stopTask(String taskName) {
-		Task task = this.getTaskByName(taskName);
+		return stopTask(this.getTaskByName(taskName));
+	}
+	
+	private boolean stopTask(Task task) {
 		if (!task.isActive()) {
 			return false;
 		}
 		task.stopTask();
 
 		// enter the task performance into record.
-		DataEntry entry = new DataEntry(taskName, LocalTime.from(task.getStartTime().atZone(ZoneId.systemDefault())),
+		DataEntry entry = new DataEntry(task.getName(), LocalTime.from(task.getStartTime().atZone(ZoneId.systemDefault())),
 				LocalTime.from(task.getStopTime().atZone(ZoneId.systemDefault())), task.getTimeElapsed());
 		this.taskRecord.addToRecord(entry);
 		System.out.println(entry.toString());
@@ -215,6 +220,20 @@ public class Profile {
 	 */
 	public DataRecord getTaskRecord() {
 		return taskRecord;
+	}
+	
+	/**
+	 * Stop all active tasks
+	 */
+	public void stopAllActiveTasks() {
+		for (Task t : allTasks) {
+			TaskState currentState = t.getState();
+			// Stop the task first before removing if it's currently active.
+			if (t.isActive()) {
+				this.stopTask(t);
+			}
+
+		}
 	}
 	
 	@Override

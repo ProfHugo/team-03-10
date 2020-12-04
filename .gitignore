@@ -24,3 +24,5 @@ logs
 .gitattributes
 target
 /testbin/
+
+.dat

@@ -213,14 +213,7 @@ public class TaskDashboard extends VBox {
 		TreeSet<String> taskNames = profile.getAllTaskNames();
 
 		// Stop all the current profile's tasks.
-		for (String taskName : taskNames) {
-			TaskState currentState = profile.getTaskState(taskName);
-			// Stop the task first before removing if it's currently active.
-			if (currentState.equals(TaskState.ACTIVE) || currentState.equals(TaskState.PAUSED)) {
-				profile.stopTask(taskName);
-			}
-
-		}
+		profile.stopAllActiveTasks();
 
 		// Flush the task dashboard.
 		Set<Node> allTaskContainers = this.lookupAll("#taskBox");
