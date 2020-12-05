@@ -1,5 +1,6 @@
 package edu.team10.lifetime.backend;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 
@@ -11,8 +12,10 @@ import java.time.LocalTime;
  * @author Hugo Wong
  *
  */
-public class DataEntry {
+public class DataEntry implements Serializable{
 	
+	private static final long serialVersionUID = -8471128509908443489L;
+
 	private String taskName;
 	
 	private LocalTime startTime, endTime;
