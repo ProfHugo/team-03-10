@@ -145,6 +145,9 @@ public class TaskDashboard extends VBox {
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 			status.setText("Status: " + TaskState.INACTIVE.toString());
 			profile.stopTask(taskName);
+			
+			// get task data to display by accessing most recent data entry
+			((TaskHistory) Main.taskHistory).displayTaskData(profile.getTaskRecord().getTaskHistory(taskName).getLast());
 		});
 
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);

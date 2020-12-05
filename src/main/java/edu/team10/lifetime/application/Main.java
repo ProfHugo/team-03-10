@@ -23,6 +23,7 @@ public class Main extends Application {
 	private static BorderPane root;
 	private static ScrollPane scrollpane;
 	private static VBox taskDb, sidePanel, settingsView;
+	static VBox taskHistory;
 
 	private static Profile currentProfile;
 	static Set<Profile> profiles;
@@ -89,6 +90,8 @@ public class Main extends Application {
 			taskDb = new TaskDashboard(currentProfile);
 
 			settingsView = new SettingsView(currentProfile);
+			
+			taskHistory = new TaskHistory(currentProfile);
 
 			// allow scrolling
 			scrollpane = new ScrollPane();
@@ -100,6 +103,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/css/taskDashboard.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/sidePanel.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/settingsPage.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/historyDisplay.css").toExternalForm());
 
 			// set green theme as default
 			currentColorTheme = getClass().getResource("/css/colors/green.css").toExternalForm();
@@ -151,6 +155,12 @@ public class Main extends Application {
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
 			Main.setPage(taskDb);
+		});
+		
+		Button taskHistoryBtn = new Button("History");
+		taskHistoryBtn.setId("taskDashboardBtn");
+		taskHistoryBtn.setOnAction(e -> {
+			Main.setPage(taskHistory);
 		});
 
 		Button settingsBtn = new Button("Settings");
@@ -204,36 +214,13 @@ public class Main extends Application {
 					// display chosen profile
 					((TaskDashboard) taskDb).setProfile(profileChosen);
 					((SettingsView) settingsView).setProfile(profileChosen);
+					((TaskHistory) taskHistory).setProfile(profileChosen);
 					currentProfile = profileChosen;
 				}
 			});
 		});
 
-		sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn, chooseAccountBtn, newAccountBtn);
-	}
-
-	public static void taskDbInit() {
-		sidePanel = new VBox();
-		sidePanel.setId("sidePanel");
-
-		// make buttons that appear on side panel
-		// Button taskDashboardBtn = makeSidePanelBtn("Tasks", "taskDashboardBtn",
-		// Main.taskDb);
-		Button taskDashboardBtn = new Button("Tasks");
-		taskDashboardBtn.setId("taskDashboardBtn");
-		taskDashboardBtn.setOnAction(e -> {
-			Main.setPage(taskDb);
-		});
-//		System.out.println("settingsView: " + Main.settingsView);
-//	    System.out.println(Main.settingsView.view.getId());
-//		Button settingsBtn = makeSidePanelBtn("SettingsView", "settingsBtn", Main.settingsView.view);
-		Button settingsBtn = new Button("SettingsView");
-		settingsBtn.setId("settingsBtn");
-		settingsBtn.setOnAction(e -> {
-			Main.setPage(settingsView);
-		});
-
-		sidePanel.getChildren().addAll(taskDashboardBtn, settingsBtn);
+		sidePanel.getChildren().addAll(taskDashboardBtn, taskHistoryBtn, settingsBtn, chooseAccountBtn, newAccountBtn);
 	}
 
 	/** makes a button to be placed on the side panel */

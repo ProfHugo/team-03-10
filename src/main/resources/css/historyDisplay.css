@@ -1,0 +1,19 @@
+/**Task History Display */
+#historyDisplay {
+	-fx-padding : 40;  
+	-fx-spacing: 30;
+}
+
+#historyPageTitle {
+	-fx-alignment: center;
+	-fx-text-alignment: center;
+	-fx-font-size: 30;
+	-fx-padding: 0 0 40 40;
+}
+
+#taskData, #columnLabel {
+	-fx-font-size: 18;
+}
+#columnLabel {
+	-fx-font-weight: bold;
+}

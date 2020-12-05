@@ -13,7 +13,6 @@
 }
 #taskDashboardBtn, #settingsBtn, #accountBtn, #accountNameLabel {
 	-fx-pref-width: 380;
-	-fx-pref-width: 380;
 	-fx-background-color: transparent;
 	
 	-fx-font-size: 18;
