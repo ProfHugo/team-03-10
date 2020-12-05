@@ -31,9 +31,10 @@ public class TaskDashboard extends VBox {
 		super();
 		this.setId("taskDashboard"); // ID is used for css
 
+		makeAddBtn();
+		
 		this.setProfile(profile);
 
-		makeAddBtn();
 	}
 
 	// creates a button to add tasks
