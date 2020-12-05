@@ -31,6 +31,9 @@ public class Task implements Comparable<Task>, Serializable {
 	 * Start the task.
 	 */
 	public void startTask() {
+		if (timer == null) {
+			timer = new Timer();
+		}
 		this.timer.start();
 		this.currentState = TaskState.ACTIVE;
 	}
