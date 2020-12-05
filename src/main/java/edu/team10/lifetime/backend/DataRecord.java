@@ -1,8 +1,11 @@
 package edu.team10.lifetime.backend;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * This class represents the user's task history as a collection of data
@@ -28,7 +31,7 @@ public class DataRecord implements Iterable<DataEntry>, Serializable {
 	public boolean addToRecord(DataEntry entry) {
 		return taskHistory.add(entry);
 	}
-	
+
 	/**
 	 *
 	 * @param entry The data entry to remove.
@@ -37,16 +40,17 @@ public class DataRecord implements Iterable<DataEntry>, Serializable {
 	public boolean removeFromRecord(DataEntry entry) {
 		return taskHistory.remove(entry);
 	}
-	
+
 	/**
-	 * Purge a task from the record by removing all data entires related to the task.
+	 * Purge a task from the record by removing all data entires related to the
+	 * task.
 	 * 
 	 * @return Whether or not this operation is successful.
 	 */
 	public boolean purgeTaskFromRecord(String taskName) {
 		return taskHistory.removeAll(this.getTaskHistory(taskName));
 	}
-	 
+
 	/**
 	 * Wipe the record clean.
 	 * 
@@ -64,13 +68,13 @@ public class DataRecord implements Iterable<DataEntry>, Serializable {
 	 */
 	public LinkedList<DataEntry> getTaskHistory(String taskName) {
 		LinkedList<DataEntry> history = new LinkedList<>();
-		
+
 		for (DataEntry entry : taskHistory) {
 			if (entry.getTaskName().equals(taskName)) {
 				history.add(entry);
 			}
 		}
-		
+
 		return history;
 	}
 
@@ -78,5 +82,25 @@ public class DataRecord implements Iterable<DataEntry>, Serializable {
 	public Iterator<DataEntry> iterator() {
 		return taskHistory.iterator();
 	}
+
+	public int size() {
+		return this.size();
+	}
+
+	/**
+	 * 
+	 * @return A set containing the names of all tasks in the record.
+	 */
+	public Set<String> getTaskSet() {
+		Set<String> taskNames = new HashSet<>();
+		for (DataEntry entry : this) {
+			String taskName = entry.getTaskName();
+			taskNames.add(taskName);
+		}
+
+		return taskNames;
+	}
+
+	
 
 }

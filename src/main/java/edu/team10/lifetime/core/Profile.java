@@ -15,10 +15,9 @@ import edu.team10.lifetime.util.Settings;
 import edu.team10.lifetime.util.Task;
 import edu.team10.lifetime.util.TaskState;
 
-
 /**
- * A class representing a user profile. A user has a name and a set of tasks associated
- * with them.
+ * A class representing a user profile. A user has a name and a set of tasks
+ * associated with them.
  * 
  * @author Hugo Wong
  *
@@ -28,12 +27,12 @@ public class Profile implements Serializable {
 	private static final long serialVersionUID = 7270946748470139194L;
 
 	private TriggerBus triggers;
-	
+
 	private TreeSet<Task> allTasks;
 	private String profileName;
 	private DataRecord taskRecord;
 	private Settings settings;
-	
+
 	public Profile(String username) {
 		this.triggers = new TriggerBus();
 		this.profileName = username;
@@ -52,7 +51,7 @@ public class Profile implements Serializable {
 	public void setProfilename(String profileName) {
 		this.profileName = profileName;
 	}
-	
+
 	/**
 	 * @param settingName
 	 * @return The value associated with the given setting name.
@@ -60,7 +59,7 @@ public class Profile implements Serializable {
 	public String getSetting(String settingName) {
 		return settings.getSettingValue(settingName);
 	}
-	
+
 	/**
 	 * Set the setting associated with the given name to this value. If this setting
 	 * does not previously exists, make a new entry containing this pair.
@@ -82,7 +81,7 @@ public class Profile implements Serializable {
 	public TreeSet<Task> getAllTasks() {
 		return this.allTasks;
 	}
-	
+
 	/**
 	 * 
 	 * @return The set of all task names.
@@ -172,7 +171,7 @@ public class Profile implements Serializable {
 	public boolean stopTask(String taskName) {
 		return stopTask(this.getTaskByName(taskName));
 	}
-	
+
 	private boolean stopTask(Task task) {
 		if (!task.isActive()) {
 			return false;
@@ -180,10 +179,10 @@ public class Profile implements Serializable {
 		task.stopTask();
 
 		// enter the task performance into record.
-		DataEntry entry = new DataEntry(task.getName(), LocalTime.from(task.getStartTime().atZone(ZoneId.systemDefault())),
+		DataEntry entry = new DataEntry(task.getName(),
+				LocalTime.from(task.getStartTime().atZone(ZoneId.systemDefault())),
 				LocalTime.from(task.getStopTime().atZone(ZoneId.systemDefault())), task.getTimeElapsed());
 		this.taskRecord.addToRecord(entry);
-		System.out.println(entry.toString());
 		return !task.isActive();
 	}
 
@@ -221,7 +220,7 @@ public class Profile implements Serializable {
 	public DataRecord getTaskRecord() {
 		return taskRecord;
 	}
-	
+
 	/**
 	 * Stop all active tasks
 	 */
@@ -235,10 +234,10 @@ public class Profile implements Serializable {
 
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.profileName;
 	}
-	
+
 }
