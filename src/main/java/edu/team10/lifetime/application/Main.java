@@ -78,9 +78,15 @@ public class Main extends Application {
 
 				// get profile input
 				Optional<String> result = popUp.showAndWait();
+				
+				 // keeps asking user for an account name if no input is given at beginning (user clicks CANCEL or CLOSE)
+				// to prevent application from running without a profile instantiated
+				while (!result.isPresent()) {
+					result = popUp.showAndWait();
+				}
 
 				result.ifPresent(profileName -> {
-					// TODO create new profile
+					// create new profile
 					Profile profile = new Profile(profileName);
 					profiles.add(profile);
 					currentProfile = profile;
