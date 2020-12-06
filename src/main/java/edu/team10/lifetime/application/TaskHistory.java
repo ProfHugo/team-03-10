@@ -205,14 +205,9 @@ public class TaskHistory implements IApplicationElement {
 		return analyzeButton;
 	}
 
-	public static void analysis(DataRecord record, String taskName) {
-
-	}
-
 	@Override
 	public void refresh() {
 		ObservableList<DataEntry> tableData = FXCollections.observableList((currentProfile.getTaskRecord().getTaskHistory()));
-		System.out.println("Model Size: " + currentProfile.getTaskRecord().getTaskHistory().size() + "Refection size: " + tableData.size());
 		historyTable.setItems(tableData);
 	}
 

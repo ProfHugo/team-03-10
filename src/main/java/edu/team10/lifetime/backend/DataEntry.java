@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import edu.team10.lifetime.util.Timer;
-import javafx.beans.property.SimpleStringProperty;
 
 /**
  * This class represents a single entry in the user's task history. One such
@@ -33,8 +32,8 @@ public class DataEntry implements Serializable {
 		this.elapsedTime = elapsedTime;
 		
 		this.startTimeStr = startTime.format(DateTimeFormatter.ofPattern("hh:mm"));
-		this.setEndTimeStr(endTime.format(DateTimeFormatter.ofPattern("hh:mm")));
-		this.setElapsedTimeStr(Timer.durationFormat(elapsedTime));
+		this.endTimeStr = endTime.format(DateTimeFormatter.ofPattern("hh:mm"));
+		this.elapsedTimeStr = Timer.durationFormat(elapsedTime);
 	}
 
 	/**
@@ -49,6 +48,7 @@ public class DataEntry implements Serializable {
 	 */
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+		
 	}
 
 	/**
@@ -58,6 +58,13 @@ public class DataEntry implements Serializable {
 		return startTime;
 	}
 
+	/**
+	 * @param endTime the startTime to set
+	 */
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+		this.startTimeStr = startTime.format(DateTimeFormatter.ofPattern("hh:mm"));
+	}
 
 	/**
 	 * @return the endTime
@@ -71,6 +78,7 @@ public class DataEntry implements Serializable {
 	 */
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
+		this.endTimeStr = endTime.format(DateTimeFormatter.ofPattern("hh:mm"));
 	}
 
 	/**
@@ -85,6 +93,7 @@ public class DataEntry implements Serializable {
 	 */
 	public void setElapsedTime(Duration elapsedTime) {
 		this.elapsedTime = elapsedTime;
+		this.elapsedTimeStr = Timer.durationFormat(elapsedTime);
 	}
 
 	public String toString() {
@@ -92,22 +101,45 @@ public class DataEntry implements Serializable {
 				startTime.toString(), endTime.toString(), elapsedTime.toString());
 	}
 
+
+	/**
+	 * @return the startTimeStr
+	 */
 	public String getStartTimeStr() {
 		return startTimeStr;
 	}
 
+	/**
+	 * @param startTimeStr the startTimeStr to set
+	 */
+	public void setStartTimeStr(String startTimeStr) {
+		this.startTimeStr = startTimeStr;
+	}
+
+	/**
+	 * @return the endTimeStr
+	 */
 	public String getEndTimeStr() {
 		return endTimeStr;
 	}
 
+	/**
+	 * @param endTimeStr the endTimeStr to set
+	 */
 	public void setEndTimeStr(String endTimeStr) {
 		this.endTimeStr = endTimeStr;
 	}
 
+	/**
+	 * @return the elapsedTimeStr
+	 */
 	public String getElapsedTimeStr() {
 		return elapsedTimeStr;
 	}
 
+	/**
+	 * @param elapsedTimeStr the elapsedTimeStr to set
+	 */
 	public void setElapsedTimeStr(String elapsedTimeStr) {
 		this.elapsedTimeStr = elapsedTimeStr;
 	}
@@ -154,7 +186,6 @@ public class DataEntry implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
+	
 }
