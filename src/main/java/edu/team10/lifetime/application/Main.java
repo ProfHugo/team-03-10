@@ -81,7 +81,7 @@ public class Main extends Application {
 
 			}
 
-			loadSuccessful = currentProfile != null;
+			loadSuccessful = currentProfile != null && profiles.size() > 0;
 
 			if (!loadSuccessful) {
 				TextInputDialog popUp = new TextInputDialog("Profile Name");
