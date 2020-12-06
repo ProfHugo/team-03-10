@@ -74,8 +74,6 @@ public class TaskHistory implements IApplicationElement {
 			historyTable.getItems().removeAll(historyTable.getSelectionModel().getSelectedItems());
 		});
 		
-		
-		
 		historyTable.getColumns().addAll(taskNameCol, startCol, endCol, totalTimeCol);
 		
 		

@@ -10,6 +10,7 @@ public class LiveTimer {
 	TimerTask incrementTask;
 
 	public LiveTimer() {
+		timer = new Timer();
 		totalCenti = 0;
 		lastPaused = 0;
 	}
@@ -33,8 +34,10 @@ public class LiveTimer {
 	 * Pause the timer.
 	 */
 	public void pauseTimer() {
-		timer.cancel();
-		lastPaused = totalCenti;
+		if (timer != null) {
+			timer.cancel();
+			lastPaused = totalCenti;
+		}
 	}
 
 	/**
