@@ -113,10 +113,6 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("/css/settingsPage.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/historyDisplay.css").toExternalForm());
 
-			// set green theme as default
-			currentColorTheme = getClass().getResource("/css/colors/green.css").toExternalForm();
-			scene.getStylesheets().add(currentColorTheme);
-
 			primaryStage.setScene(scene);
 			primaryStage.show();
 

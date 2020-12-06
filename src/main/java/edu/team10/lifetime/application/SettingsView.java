@@ -30,6 +30,15 @@ public class SettingsView implements IApplicationElement {
 	}
 	
 	public void initColorSettings() {
+		// set color theme
+		if (currentProfile.getSetting("colorScheme") != null) {
+			Main.changeColorTheme(getColorResource(currentProfile.getSetting("colorScheme")));
+		} 
+		else {
+			// set green theme as default
+			Main.currentColorTheme = getClass().getResource("/css/colors/green.css").toExternalForm();
+			Main.scene.getStylesheets().add(Main.currentColorTheme);
+		}
 		colorSettings = new HBox();	// displays buttons to change color theme of application
 		colorSettings.setId("colorSettingBox"); 
 		
