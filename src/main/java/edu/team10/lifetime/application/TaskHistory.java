@@ -42,8 +42,6 @@ public class TaskHistory implements IApplicationElement {
 		Label title = new Label("Task History");
 		title.setId("historyPageTitle");
 		
-		Label columnLabel = new Label("task\tstart\tend\ttotal time");
-		columnLabel.setId("columnLabel");
 
 		// set profile
 		currentProfile = profile;
@@ -82,7 +80,7 @@ public class TaskHistory implements IApplicationElement {
 		
 		
 
-		view.getChildren().addAll(title, columnLabel, historyTable, removeEntryBtn);
+		view.getChildren().addAll(title, historyTable, removeEntryBtn);
 
 		setProfile(profile);
 	}
