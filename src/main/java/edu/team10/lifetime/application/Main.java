@@ -8,6 +8,8 @@ import edu.team10.lifetime.backend.SavefileManager;
 import edu.team10.lifetime.core.Profile;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ScrollPane;
@@ -22,8 +24,8 @@ public class Main extends Application {
 
 	private static BorderPane root;
 	private static ScrollPane scrollpane;
-	private static VBox taskDb, sidePanel, settingsView;
-	static VBox taskHistory;
+	private static VBox sidePanel;
+	private static IApplicationElement taskDb, settingsView, taskHistory;
 
 	private static Profile currentProfile;
 	static Set<Profile> profiles;
@@ -41,9 +43,9 @@ public class Main extends Application {
 
 			root = new BorderPane();
 			root.setLeft(sidePanel);
-			
+
 			scene = new Scene(root, 1280, 720);
-			
+
 			boolean loadSuccessful = false;
 
 			if (saveManager.saveFileExists()) {
@@ -72,14 +74,15 @@ public class Main extends Application {
 			}
 
 			if (!loadSuccessful) {
-				TextInputDialog popUp = new TextInputDialog("Account Name");
-				popUp.setTitle("Initial New Account");
-				popUp.setHeaderText("Give a name for your account");
+				TextInputDialog popUp = new TextInputDialog("Profile Name");
+				popUp.setTitle("Initial New Profile");
+				popUp.setHeaderText("Give a name for your first profile.");
 
 				// get profile input
 				Optional<String> result = popUp.showAndWait();
-				
-				 // keeps asking user for an account name if no input is given at beginning (user clicks CANCEL or CLOSE)
+
+				// keeps asking user for an account name if no input is given at beginning (user
+				// clicks CANCEL or CLOSE)
 				// to prevent application from running without a profile instantiated
 				while (!result.isPresent()) {
 					result = popUp.showAndWait();
@@ -96,14 +99,13 @@ public class Main extends Application {
 			taskDb = new TaskDashboard(currentProfile);
 
 			settingsView = new SettingsView(currentProfile);
-			
+
 			taskHistory = new TaskHistory(currentProfile);
 
 			// allow scrolling
 			scrollpane = new ScrollPane();
-			setPage(taskDb); // shows task dashboard on default
+			setPage(taskDb.getView()); // shows task dashboard on default
 			root.setCenter(scrollpane); // add scrollpane (containg task dashboard) to root
-
 
 			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			scene.getStylesheets().add(getClass().getResource("/css/taskDashboard.css").toExternalForm());
@@ -160,30 +162,30 @@ public class Main extends Application {
 		Button taskDashboardBtn = new Button("Tasks");
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
-			Main.setPage(taskDb);
+			Main.setPage(taskDb.getView());
 		});
-		
+
 		Button taskHistoryBtn = new Button("History");
 		taskHistoryBtn.setId("taskDashboardBtn");
 		taskHistoryBtn.setOnAction(e -> {
-			Main.setPage(taskHistory);
+			Main.setPage(taskHistory.getView());
 		});
 
 		Button settingsBtn = new Button("Settings");
 		settingsBtn.setId("settingsBtn");
 		settingsBtn.setOnAction(e -> {
-			Main.setPage(settingsView);
+			Main.setPage(settingsView.getView());
 		});
 
 //		Label accountName = new Label(currentProfile.getProfileName());	// displays which profile is being displayed
 //		accountName.setId("accountNameLabel");
 
-		Button newAccountBtn = new Button("New\nAccount"); // allows user to add an account
+		Button newAccountBtn = new Button("New\nProfile"); // allows user to add an account
 		newAccountBtn.setId("accountBtn");
 		newAccountBtn.setOnAction(e -> {
-			TextInputDialog popUp = new TextInputDialog("account name");
+			TextInputDialog popUp = new TextInputDialog("profile name");
 			popUp.setTitle("New Account");
-			popUp.setHeaderText("Give a name for your account");
+			popUp.setHeaderText("Give a name for your profile");
 
 			// get profile input
 			Optional<String> result = popUp.showAndWait();
@@ -218,37 +220,48 @@ public class Main extends Application {
 			result.ifPresent(profileChosen -> {
 				if (!profileChosen.equals(currentProfile)) {
 					// display chosen profile
-					((TaskDashboard) taskDb).setProfile(profileChosen);
-					((SettingsView) settingsView).setProfile(profileChosen);
-					((TaskHistory) taskHistory).setProfile(profileChosen);
+					taskDb.setProfile(profileChosen);
+					taskDb.refresh();
+					settingsView.setProfile(profileChosen);
+					settingsView.refresh();
+					taskHistory.setProfile(profileChosen);
+					taskHistory.refresh();
 					currentProfile = profileChosen;
 				}
 			});
 		});
-		
-		Button deleteAccountBtn = new Button("Delete\nAccount");
+
+		Button deleteAccountBtn = new Button("Delete\nProfile");
 		deleteAccountBtn.setId("accountBtn");
 		deleteAccountBtn.setOnAction(e -> {
 			// profile options to delete
-			Set<Profile> deletionChoices = new HashSet<>(profiles);	
+			Set<Profile> deletionChoices = new HashSet<>(profiles);
 			deletionChoices.remove(currentProfile);
-			
+
 //			System.out.println("current profile referenced by profiles? "+profiles.contains(currentProfile));
 //			System.out.println("can delete current profile? "+profileChoices.contains(currentProfile));
-			
-			ChoiceDialog<Profile> popUp = new ChoiceDialog<>( deletionChoices.iterator().next(), deletionChoices);
-			popUp.setTitle("Profile Deletion Choices");
-			popUp.setHeaderText("Choose a profile to delete");
-			popUp.setContentText("Profiles: ");
 
-			Optional<Profile> result = popUp.showAndWait();
-			
-			result.ifPresent(deleteMe -> {
-				profiles.remove(deleteMe);
-			});
+			if (deletionChoices.size() > 1) {
+				ChoiceDialog<Profile> popUp = new ChoiceDialog<>(deletionChoices.iterator().next(), deletionChoices);
+				popUp.setTitle("Profile Deletion Choices");
+				popUp.setHeaderText("Choose a profile to delete");
+				popUp.setContentText("Profiles: ");
+
+				Optional<Profile> result = popUp.showAndWait();
+
+				result.ifPresent(deleteMe -> {
+					profiles.remove(deleteMe);
+				});
+			} else {
+				Alert noneRemovable = new Alert(AlertType.WARNING);
+				noneRemovable.setContentText("Cannot remove the only active profile.");
+				noneRemovable.show();
+			}
+
 		});
 
-		sidePanel.getChildren().addAll(taskDashboardBtn, taskHistoryBtn, settingsBtn, chooseAccountBtn, newAccountBtn, deleteAccountBtn);
+		sidePanel.getChildren().addAll(taskDashboardBtn, taskHistoryBtn, settingsBtn, chooseAccountBtn, newAccountBtn,
+				deleteAccountBtn);
 	}
 
 	/** makes a button to be placed on the side panel */

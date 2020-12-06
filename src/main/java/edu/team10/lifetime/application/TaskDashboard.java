@@ -23,13 +23,15 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 // displays a list of all tasks and a button to create new tasks
-public class TaskDashboard extends VBox {
+public class TaskDashboard implements IApplicationElement {
 
 	private Profile profile;
 
+	private VBox view;
+	
 	public TaskDashboard(Profile profile) {
-		super();
-		this.setId("taskDashboard"); // ID is used for css
+		view = new VBox();
+		view.setId("taskDashboard"); // ID is used for css
 
 		makeAddBtn();
 		
@@ -46,7 +48,7 @@ public class TaskDashboard extends VBox {
 		// event handler: if button is clicked, window pops up
 		addBtn.setOnAction(event -> addTaskPopUp());
 
-		this.getChildren().addAll(addBtn);
+		view.getChildren().addAll(addBtn);
 	}
 
 	public void addTaskPopUp() {
@@ -145,9 +147,6 @@ public class TaskDashboard extends VBox {
 			playBtn.setStyle("-fx-background-image: url(\"images/play.png\"); ");
 			status.setText("Status: " + TaskState.INACTIVE.toString());
 			profile.stopTask(taskName);
-			
-			// get task data to display by accessing most recent data entry
-			((TaskHistory) Main.taskHistory).displayTaskData(profile.getTaskRecord().getTaskHistory(taskName).getLast());
 		});
 
 		Button removeBtn = makeRemoveBtn(taskContainer, taskName);
@@ -156,7 +155,7 @@ public class TaskDashboard extends VBox {
 		taskContainer.getChildren().addAll(playBtn, timeDisplay, name, status, stopBtn, removeBtn);
 
 		// adds taskContainer to dashboard display
-		this.getChildren().addAll(taskContainer);
+		view.getChildren().addAll(taskContainer);
 	}
 
 	// takes in the element that contains all the task's information to delete, and
@@ -197,7 +196,7 @@ public class TaskDashboard extends VBox {
 				 **/
 				// System.out.println("timer still there:
 				// "+Main.settingsView.liveTimerSetting.timers.contains(liveTimer));
-				this.getChildren().remove(taskContainer); // removes display of task on dashboard
+				view.getChildren().remove(taskContainer); // removes display of task on dashboard
 			} else {
 				// do nothing
 			}
@@ -224,8 +223,8 @@ public class TaskDashboard extends VBox {
 			profile.stopAllActiveTasks();
 
 			// Flush the task dashboard.
-			Set<Node> allTaskContainers = this.lookupAll("#taskBox");
-			this.getChildren().removeAll(allTaskContainers);
+			Set<Node> allTaskContainers = view.lookupAll("#taskBox");
+			view.getChildren().removeAll(allTaskContainers);
 		}
 		
 		// Replace or set the new profile.
@@ -254,6 +253,17 @@ public class TaskDashboard extends VBox {
 		 * noSpecialChar.matcher(taskName); return !hasNoSpecialChar.find();
 		 */
 		return true;
+	}
+
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public VBox getView() {
+		return this.view;
 	}
 
 }

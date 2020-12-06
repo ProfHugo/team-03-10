@@ -23,12 +23,14 @@ import javafx.scene.layout.VBox;
 /**
  * displays history of all stopped tasks
  */
-public class TaskHistory extends VBox {
+public class TaskHistory implements IApplicationElement {
 
 	Profile currentProfile;
+	VBox view;
 
 	public TaskHistory(Profile profile) {
-		this.setId("historyDisplay");
+		view = new VBox();
+		view.setId("historyDisplay");
 
 		Label title = new Label("Task History");
 		title.setId("historyPageTitle");
@@ -38,8 +40,8 @@ public class TaskHistory extends VBox {
 
 		// set profile
 		currentProfile = profile;
-		
-		this.getChildren().addAll(title, columnLabel);
+
+		view.getChildren().addAll(title, columnLabel);
 
 		setProfile(profile);
 	}
@@ -48,19 +50,19 @@ public class TaskHistory extends VBox {
 	public void setProfile(Profile newProfile) {
 		// if switching profiles, remove data of previous profile
 		if (currentProfile != null) {
-			Set<Node> previousTaskData = this.lookupAll("#rowOfData");
-			Node previousTaskAnalysisBtn = this.lookup("#taskAnalysisBtn");
+			Set<Node> previousTaskData = view.lookupAll("#rowOfData");
+			Node previousTaskAnalysisBtn = view.lookup("#taskAnalysisBtn");
 //			previousTaskData.add(previousTaskAnalysisBtn);
-			this.getChildren().remove(previousTaskAnalysisBtn);
-			this.getChildren().removeAll(previousTaskData);
+			view.getChildren().remove(previousTaskAnalysisBtn);
+			view.getChildren().removeAll(previousTaskData);
 		}
 
 		// set profile
 		currentProfile = newProfile;
-		
+
 		// put button to analyze tasks
 		Button analyzeButton = makeAnalyzeBtn();
-		this.getChildren().add(1, analyzeButton);
+		view.getChildren().add(1, analyzeButton);
 
 		// add display of data
 		for (DataEntry entry : newProfile.getTaskRecord()) {
@@ -70,21 +72,21 @@ public class TaskHistory extends VBox {
 
 	/** displays info about a task's starting, ending, and total time */
 	public void displayTaskData(DataEntry entry) {
-		HBox row = new HBox();	// a single line on the page containing task data info and delete button
+		HBox row = new HBox(); // a single line on the page containing task data info and delete button
 		row.setId("rowOfData");
-		
+
 		Label taskData = new Label(
 				entry.getTaskName() + "\t" + entry.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm")) + "\t"
 						+ entry.getEndTime().format(DateTimeFormatter.ofPattern("hh:mm")) + "\t"
 						+ durationFormat(entry.getElapsedTime()));
 		taskData.setId("taskData");
-		
+
 		Button deleteEntryBtn = new Button();
 		deleteEntryBtn.setId("deleteEntryBtn");
-		deleteEntryBtn.setOnAction( e -> {
+		deleteEntryBtn.setOnAction(e -> {
 			// remove display of data
-			this.getChildren().remove(row);
-			
+			view.getChildren().remove(row);
+
 			// remove data
 			currentProfile.getTaskRecord().removeFromRecord(entry);
 //			System.out.println("entry still there? "+currentProfile.getTaskRecord().getTaskHistory(entry.getTaskName()).contains(entry));
@@ -92,7 +94,7 @@ public class TaskHistory extends VBox {
 
 		// add to display on screen
 		row.getChildren().addAll(taskData, deleteEntryBtn);
-		this.getChildren().add(row);
+		view.getChildren().add(row);
 	}
 
 	// turns a duration into a readable time format
@@ -114,8 +116,9 @@ public class TaskHistory extends VBox {
 		// event handler: if button is clicked, window pops up
 		analyzeButton.setOnAction(event -> {
 
-			Set<String> taskNames = record.getTaskSet();		// list of existing tasks needs to be updated every time button clicked
-			
+			Set<String> taskNames = record.getTaskSet(); // list of existing tasks needs to be updated every time button
+															// clicked
+
 			if (taskNames.size() > 0) {
 				ChoiceDialog<String> popUp = new ChoiceDialog<>(taskNames.iterator().next(), taskNames);
 				popUp.setTitle("Tasks");
@@ -186,7 +189,7 @@ public class TaskHistory extends VBox {
 					}
 				});
 			} else {
-
+				// do nothing.
 			}
 
 		});
@@ -196,6 +199,25 @@ public class TaskHistory extends VBox {
 
 	public static void analysis(DataRecord record, String taskName) {
 
+	}
+
+	@Override
+	public void refresh() {
+		DataRecord record = currentProfile.getTaskRecord();
+		// Flush the old history.
+		Set<Node> allTaskContainers = view.lookupAll("#rowOfData");
+		view.getChildren().removeAll(allTaskContainers);
+		
+		// Add everything back.
+		for (DataEntry entry : record) {
+			displayTaskData(entry);
+		}
+		
+	}
+
+	@Override
+	public VBox getView() {
+		return this.view;
 	}
 
 }

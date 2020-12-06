@@ -7,15 +7,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /** allows user to change view settingsView */
-public class SettingsView extends VBox {
+public class SettingsView implements IApplicationElement {
 	HBox colorSettings, liveTimerSettings;
 	Label title;
+	
+	VBox view;
 	
 	Profile currentProfile;
 	
 	public SettingsView(Profile currentProfile) {
-		super();
-		this.setId("settingsPage");
+		this.view = new VBox();
+		view.setId("settingsPage");
 		this.setProfile(currentProfile);
 		
 		title = new Label("Settings");
@@ -24,7 +26,7 @@ public class SettingsView extends VBox {
 		initColorSettings();
 		initLiveTimerSettings();
 		
-		this.getChildren().addAll(title, colorSettings, liveTimerSettings);
+		view.getChildren().addAll(title, colorSettings, liveTimerSettings);
 	}
 	
 	public void initColorSettings() {
@@ -98,6 +100,18 @@ public class SettingsView extends VBox {
 		String url = getColorResource(currentProfile.getSetting("colorScheme"));
 		Main.changeColorTheme(url);
 
+	}
+	
+	@Override
+	public void refresh() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public VBox getView() {
+		// TODO Auto-generated method stub
+		return this.view;
 	}
 	
 }
