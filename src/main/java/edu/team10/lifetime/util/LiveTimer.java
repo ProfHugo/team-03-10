@@ -46,25 +46,14 @@ public class LiveTimer {
 			totalCenti = 0;
 			lastPaused = 0;
 		}
-	}
-
-	/**
-	 * 
-	 * @param time
-	 * @return If the number is less than 10, return it with a 0 appended to it.
-	 *         Otherwise just return it as is as a string.
-	 */
-	public static String formatTimeUnit(long time) {
-		return time < 10 ? "0" + time : "" + time;
-	}
-	
+	}	
 	
 
 	public String toString() {
 		long totalSeconds = totalCenti / 100;
-		String minutes = formatTimeUnit(totalSeconds / 60);
-		String hours = formatTimeUnit(totalSeconds / 3600);
-		String seconds = formatTimeUnit(totalSeconds % 60);
+		String minutes = edu.team10.lifetime.util.Timer.formatTimeUnit(totalSeconds / 60);
+		String hours = edu.team10.lifetime.util.Timer.formatTimeUnit(totalSeconds / 3600);
+		String seconds = edu.team10.lifetime.util.Timer.formatTimeUnit(totalSeconds % 60);
 		return hours + ":" + minutes + ":" + seconds;
 	}
 

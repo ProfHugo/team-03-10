@@ -2,7 +2,6 @@ package edu.team10.lifetime.application;
 
 import java.math.BigInteger;
 import java.time.Duration;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Set;
@@ -10,15 +9,21 @@ import java.util.Set;
 import edu.team10.lifetime.backend.DataEntry;
 import edu.team10.lifetime.backend.DataRecord;
 import edu.team10.lifetime.core.Profile;
-import edu.team10.lifetime.util.LiveTimer;
+import edu.team10.lifetime.util.Timer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+
 
 /**
  * displays history of all stopped tasks
@@ -27,6 +32,8 @@ public class TaskHistory implements IApplicationElement {
 
 	Profile currentProfile;
 	VBox view;
+	
+	TableView<DataEntry> historyTable;
 
 	public TaskHistory(Profile profile) {
 		view = new VBox();
@@ -34,14 +41,48 @@ public class TaskHistory implements IApplicationElement {
 
 		Label title = new Label("Task History");
 		title.setId("historyPageTitle");
-
+		
 		Label columnLabel = new Label("task\tstart\tend\ttotal time");
 		columnLabel.setId("columnLabel");
 
 		// set profile
 		currentProfile = profile;
+				
+		// Create the table
+		historyTable = new TableView<>();
+		historyTable.setEditable(true);
+		
+		TableColumn<DataEntry, String> taskNameCol = new TableColumn<>("Task Name");
+		taskNameCol.setCellValueFactory(new PropertyValueFactory<>("taskName"));
+		taskNameCol.setMinWidth(200);
+		TableColumn<DataEntry, String> startCol = new TableColumn<>("Start Time");
+		startCol.setCellValueFactory(new PropertyValueFactory<>("startTimeStr"));
+		startCol.setMinWidth(100);
+		TableColumn<DataEntry, String> endCol = new TableColumn<>("End Time");
+		endCol.setCellValueFactory(new PropertyValueFactory<>("endTimeStr"));
+		endCol.setMinWidth(100);
+		TableColumn<DataEntry, String> totalTimeCol = new TableColumn<>("Total Time");
+		totalTimeCol.setCellValueFactory(new PropertyValueFactory<>("elapsedTimeStr"));
+		totalTimeCol.setMinWidth(100);
+		historyTable.setMinSize(500, 450);
+		
 
-		view.getChildren().addAll(title, columnLabel);
+		ObservableList<DataEntry> tableData = FXCollections.observableList((currentProfile.getTaskRecord().getTaskHistory()));
+		historyTable.setItems(tableData);
+		historyTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+		Button removeEntryBtn = new Button("Remove selected entry");
+		removeEntryBtn.setOnAction(event -> {
+			historyTable.getItems().removeAll(historyTable.getSelectionModel().getSelectedItems());
+		});
+		
+		
+		
+		historyTable.getColumns().addAll(taskNameCol, startCol, endCol, totalTimeCol);
+		
+		
+
+		view.getChildren().addAll(title, columnLabel, historyTable, removeEntryBtn);
 
 		setProfile(profile);
 	}
@@ -64,43 +105,12 @@ public class TaskHistory implements IApplicationElement {
 		Button analyzeButton = makeAnalyzeBtn();
 		view.getChildren().add(1, analyzeButton);
 
-		// add display of data
-		for (DataEntry entry : newProfile.getTaskRecord()) {
-			displayTaskData(entry);
-		}
-	}
-
-	/** displays info about a task's starting, ending, and total time */
-	public void displayTaskData(DataEntry entry) {
-		HBox row = new HBox(); // a single line on the page containing task data info and delete button
-		row.setId("rowOfData");
-
-		Label taskData = new Label(
-				entry.getTaskName() + "\t" + entry.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm")) + "\t"
-						+ entry.getEndTime().format(DateTimeFormatter.ofPattern("hh:mm")) + "\t"
-						+ durationFormat(entry.getElapsedTime()));
-		taskData.setId("taskData");
-
-		Button deleteEntryBtn = new Button();
-		deleteEntryBtn.setId("deleteEntryBtn");
-		deleteEntryBtn.setOnAction(e -> {
-			// remove display of data
-			view.getChildren().remove(row);
-
-			// remove data
-			currentProfile.getTaskRecord().removeFromRecord(entry);
-//			System.out.println("entry still there? "+currentProfile.getTaskRecord().getTaskHistory(entry.getTaskName()).contains(entry));
-		});
-
-		// add to display on screen
-		row.getChildren().addAll(taskData, deleteEntryBtn);
-		view.getChildren().add(row);
 	}
 
 	// turns a duration into a readable time format
-	public String durationFormat(Duration duration) {
-		return LiveTimer.formatTimeUnit(duration.toHours()) + ":" + LiveTimer.formatTimeUnit(duration.toMinutes() % 60)
-				+ ":" + LiveTimer.formatTimeUnit(duration.getSeconds() % 60);
+	public static String durationFormat(Duration duration) {
+		return Timer.formatTimeUnit(duration.toHours()) + ":" + Timer.formatTimeUnit(duration.toMinutes() % 60)
+				+ ":" + Timer.formatTimeUnit(duration.getSeconds() % 60);
 	}
 
 	public Button makeAnalyzeBtn() {
@@ -203,16 +213,9 @@ public class TaskHistory implements IApplicationElement {
 
 	@Override
 	public void refresh() {
-		DataRecord record = currentProfile.getTaskRecord();
-		// Flush the old history.
-		Set<Node> allTaskContainers = view.lookupAll("#rowOfData");
-		view.getChildren().removeAll(allTaskContainers);
-		
-		// Add everything back.
-		for (DataEntry entry : record) {
-			displayTaskData(entry);
-		}
-		
+		ObservableList<DataEntry> tableData = FXCollections.observableList((currentProfile.getTaskRecord().getTaskHistory()));
+		System.out.println("Model Size: " + currentProfile.getTaskRecord().getTaskHistory().size() + "Refection size: " + tableData.size());
+		historyTable.setItems(tableData);
 	}
 
 	@Override

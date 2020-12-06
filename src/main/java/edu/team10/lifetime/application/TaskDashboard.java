@@ -66,7 +66,9 @@ public class TaskDashboard implements IApplicationElement {
 				this.displayTask(taskName);
 			} else {
 				// notify the profile that the task already exists.
-				System.out.println("Warning: Task already exists.");
+				Alert noneRemovable = new Alert(AlertType.WARNING);
+				noneRemovable.setContentText("This task is already in the dashboard");
+				noneRemovable.show();
 			}
 		});
 	}

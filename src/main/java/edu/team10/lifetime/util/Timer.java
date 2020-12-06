@@ -68,7 +68,6 @@ public class Timer {
 		currentState = TimerState.STOPPED;
 	}
 
-	
 	/**
 	 * @return the startTime
 	 */
@@ -113,5 +112,21 @@ public class Timer {
 		stopTime = null;
 		totalTimeElapsed = Duration.ofMillis(0);
 		currentState = TimerState.STOPPED;
+	}
+
+	// turns a duration into a readable time format
+	public static String durationFormat(Duration duration) {
+		return formatTimeUnit(duration.toHours()) + ":" + formatTimeUnit(duration.toMinutes() % 60)
+				+ ":" + formatTimeUnit(duration.getSeconds() % 60);
+	}
+
+	/**
+	 * 
+	 * @param time
+	 * @return If the number is less than 10, return it with a 0 appended to it.
+	 *         Otherwise just return it as is as a string.
+	 */
+	public static String formatTimeUnit(long time) {
+		return time < 10 ? "0" + time : "" + time;
 	}
 }

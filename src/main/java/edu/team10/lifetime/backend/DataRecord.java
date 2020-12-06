@@ -1,10 +1,11 @@
 package edu.team10.lifetime.backend;
 
 import java.io.Serializable;
-import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,10 +18,10 @@ import java.util.Set;
 public class DataRecord implements Iterable<DataEntry>, Serializable {
 
 	private static final long serialVersionUID = -3570350698166388647L;
-	LinkedList<DataEntry> taskHistory;
+	List<DataEntry> taskHistory;
 
 	public DataRecord() {
-		taskHistory = new LinkedList<>();
+		taskHistory = new ArrayList<>();
 	}
 
 	/**
@@ -99,6 +100,10 @@ public class DataRecord implements Iterable<DataEntry>, Serializable {
 		}
 
 		return taskNames;
+	}
+	
+	public List<DataEntry> getTaskHistory() {
+		return this.taskHistory;
 	}
 
 	
