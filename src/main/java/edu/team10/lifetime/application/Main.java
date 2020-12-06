@@ -225,8 +225,30 @@ public class Main extends Application {
 				}
 			});
 		});
+		
+		Button deleteAccountBtn = new Button("Delete\nAccount");
+		deleteAccountBtn.setId("accountBtn");
+		deleteAccountBtn.setOnAction(e -> {
+			// profile options to delete
+			Set<Profile> deletionChoices = new HashSet<>(profiles);	
+			deletionChoices.remove(currentProfile);
+			
+//			System.out.println("current profile referenced by profiles? "+profiles.contains(currentProfile));
+//			System.out.println("can delete current profile? "+profileChoices.contains(currentProfile));
+			
+			ChoiceDialog<Profile> popUp = new ChoiceDialog<>( deletionChoices.iterator().next(), deletionChoices);
+			popUp.setTitle("Profile Deletion Choices");
+			popUp.setHeaderText("Choose a profile to delete");
+			popUp.setContentText("Profiles: ");
 
-		sidePanel.getChildren().addAll(taskDashboardBtn, taskHistoryBtn, settingsBtn, chooseAccountBtn, newAccountBtn);
+			Optional<Profile> result = popUp.showAndWait();
+			
+			result.ifPresent(deleteMe -> {
+				profiles.remove(deleteMe);
+			});
+		});
+
+		sidePanel.getChildren().addAll(taskDashboardBtn, taskHistoryBtn, settingsBtn, chooseAccountBtn, newAccountBtn, deleteAccountBtn);
 	}
 
 	/** makes a button to be placed on the side panel */
