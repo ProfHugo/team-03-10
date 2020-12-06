@@ -29,13 +29,13 @@ public class TaskDashboard implements IApplicationElement {
 	private Profile profile;
 
 	private VBox view;
-	
+
 	public TaskDashboard(Profile profile) {
 		view = new VBox();
 		view.setId("taskDashboard"); // ID is used for css
 
 		makeAddBtn();
-		
+
 		this.setProfile(profile);
 
 	}
@@ -215,28 +215,16 @@ public class TaskDashboard implements IApplicationElement {
 	 * @param newProfile
 	 */
 	public void setProfile(Profile newProfile) {
-		TreeSet<String> taskNames;
-		
 		// check if we're replacing an existing profile.
 		if (profile != null) {
-			taskNames = profile.getAllTaskNames();
-
 			// Stop all the current profile's tasks.
 			profile.stopAllActiveTasks();
-
-			// Flush the task dashboard.
-			Set<Node> allTaskContainers = view.lookupAll("#taskBox");
-			view.getChildren().removeAll(allTaskContainers);
 		}
-		
+
 		// Replace or set the new profile.
 		this.profile = newProfile;
 
-		// Repopulate the task dashboard.
-		taskNames = profile.getAllTaskNames();
-		for (String taskName : taskNames) {
-			displayTask(taskName);
-		}
+		this.refresh();
 
 	}
 
@@ -259,8 +247,15 @@ public class TaskDashboard implements IApplicationElement {
 
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
+		// Flush the task dashboard.
+		Set<Node> allTaskContainers = view.lookupAll("#taskBox");
+		view.getChildren().removeAll(allTaskContainers);
+
+		// Repopulate the task dashboard.
+		TreeSet<String> taskNames = profile.getAllTaskNames();
+		for (String taskName : taskNames) {
+			displayTask(taskName);
+		}
 	}
 
 	@Override
