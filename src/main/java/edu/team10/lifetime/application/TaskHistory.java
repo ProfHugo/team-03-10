@@ -17,6 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -47,7 +48,7 @@ public class TaskHistory extends VBox {
 	public void setProfile(Profile newProfile) {
 		// if switching profiles, remove data of previous profile
 		if (currentProfile != null) {
-			Set<Node> previousTaskData = this.lookupAll("#taskData");
+			Set<Node> previousTaskData = this.lookupAll("#rowOfData");
 			Node previousTaskAnalysisBtn = this.lookup("#taskAnalysisBtn");
 //			previousTaskData.add(previousTaskAnalysisBtn);
 			this.getChildren().remove(previousTaskAnalysisBtn);
@@ -69,13 +70,29 @@ public class TaskHistory extends VBox {
 
 	/** displays info about a task's starting, ending, and total time */
 	public void displayTaskData(DataEntry entry) {
+		HBox row = new HBox();	// a single line on the page containing task data info and delete button
+		row.setId("rowOfData");
+		
 		Label taskData = new Label(
 				entry.getTaskName() + "\t" + entry.getStartTime().format(DateTimeFormatter.ofPattern("hh:mm")) + "\t"
 						+ entry.getEndTime().format(DateTimeFormatter.ofPattern("hh:mm")) + "\t"
 						+ durationFormat(entry.getElapsedTime()));
 		taskData.setId("taskData");
+		
+		Button deleteEntryBtn = new Button();
+		deleteEntryBtn.setId("deleteEntryBtn");
+		deleteEntryBtn.setOnAction( e -> {
+			// remove display of data
+			this.getChildren().remove(row);
+			
+			// remove data
+			currentProfile.getTaskRecord().removeFromRecord(entry);
+//			System.out.println("entry still there? "+currentProfile.getTaskRecord().getTaskHistory(entry.getTaskName()).contains(entry));
+		});
 
-		this.getChildren().add(taskData);
+		// add to display on screen
+		row.getChildren().addAll(taskData, deleteEntryBtn);
+		this.getChildren().add(row);
 	}
 
 	// turns a duration into a readable time format
@@ -88,7 +105,7 @@ public class TaskHistory extends VBox {
 		// a LoD mess but whatever man
 		DataRecord record = this.currentProfile.getTaskRecord();
 
-		Set<String> taskNames = record.getTaskSet();
+//		Set<String> taskNames = record.getTaskSet();
 
 		Button analyzeButton = new Button();
 		analyzeButton.setId("taskAnalysisBtn");
@@ -96,6 +113,9 @@ public class TaskHistory extends VBox {
 
 		// event handler: if button is clicked, window pops up
 		analyzeButton.setOnAction(event -> {
+
+			Set<String> taskNames = record.getTaskSet();		// list of existing tasks needs to be updated every time button clicked
+			
 			if (taskNames.size() > 0) {
 				ChoiceDialog<String> popUp = new ChoiceDialog<>(taskNames.iterator().next(), taskNames);
 				popUp.setTitle("Tasks");
