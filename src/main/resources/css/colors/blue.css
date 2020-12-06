@@ -1,5 +1,11 @@
 /* Blue color theme */
 
-#sidePanel, #taskBox {
+#sidePanel, #taskBox, #taskAnalysisBtn {
 	-fx-background-color: LIGHTBLUE;
+}
+
+/* a lighter shade */
+#taskAnalysisBtn:hover {
+	/*-fx-background-color: "0x7997a1ff";*/	 /* a darker shade */
+	-fx-background-color: "0xBDE0EB";
 }

@@ -38,10 +38,7 @@ public class TaskHistory extends VBox {
 		// set profile
 		currentProfile = profile;
 		
-		// make & style button
-		Button analyzeButton = makeAnalyzeBtn();
-
-		this.getChildren().addAll(title, analyzeButton, columnLabel);
+		this.getChildren().addAll(title, columnLabel);
 
 		setProfile(profile);
 	}
@@ -51,11 +48,18 @@ public class TaskHistory extends VBox {
 		// if switching profiles, remove data of previous profile
 		if (currentProfile != null) {
 			Set<Node> previousTaskData = this.lookupAll("#taskData");
+			Node previousTaskAnalysisBtn = this.lookup("#taskAnalysisBtn");
+//			previousTaskData.add(previousTaskAnalysisBtn);
+			this.getChildren().remove(previousTaskAnalysisBtn);
 			this.getChildren().removeAll(previousTaskData);
 		}
 
 		// set profile
 		currentProfile = newProfile;
+		
+		// put button to analyze tasks
+		Button analyzeButton = makeAnalyzeBtn();
+		this.getChildren().add(1, analyzeButton);
 
 		// add display of data
 		for (DataEntry entry : newProfile.getTaskRecord()) {
@@ -87,7 +91,7 @@ public class TaskHistory extends VBox {
 		Set<String> taskNames = record.getTaskSet();
 
 		Button analyzeButton = new Button();
-		analyzeButton.setId("taskAnalysis");
+		analyzeButton.setId("taskAnalysisBtn");
 		analyzeButton.setText("Analyze Task");
 
 		// event handler: if button is clicked, window pops up
@@ -151,6 +155,8 @@ public class TaskHistory extends VBox {
 
 						// displays the stats
 						Alert statDisplay = new Alert(AlertType.INFORMATION);
+						statDisplay.setTitle("Task Statistics");
+						statDisplay.setHeaderText("");
 						String info = String.format("Min Time: %s\nMax Time: %s\nMean Time: %s\nSample Variance: %s\n",
 								durationFormat(minTime), durationFormat(maxTime), durationFormat(averageTime),
 								durationFormat(sampleVariance));

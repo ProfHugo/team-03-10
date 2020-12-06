@@ -1,5 +1,10 @@
 /* Orange color theme */
 
-#sidePanel, #taskBox {
+#sidePanel, #taskBox, #taskAnalysisBtn {
 	-fx-background-color: DARKSALMON;
+}
+
+/* a lighter shade */
+#taskAnalysisBtn:hover {
+	-fx-background-color: "0xffa486ff";
 }

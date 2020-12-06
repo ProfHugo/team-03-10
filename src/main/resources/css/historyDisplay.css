@@ -8,7 +8,7 @@
 	-fx-alignment: center;
 	-fx-text-alignment: center;
 	-fx-font-size: 30;
-	-fx-padding: 0 0 40 40;
+	-fx-padding: 0 0 0 40;	/* top, right, bottm, left */
 }
 
 #taskData, #columnLabel {
@@ -16,4 +16,20 @@
 }
 #columnLabel {
 	-fx-font-weight: bold;
+}
+
+#taskAnalysisBtn {
+	-fx-pref-width: 200;
+	-fx-pref-height: 50px;
+	
+	-fx-font-size: 20;
+	-fx-text-fill: BLACK;
+	
+	/* rounding corners: top left, top right, bottom right, bottom left */
+	-fx-border-radius: 10 10 10 10;
+	-fx-background-radius: 10 10 10 10;
+} #taskAnalysisBtn:hover {
+	-fx-font-size: 23;
+
+	/*-fx-opacity: 0.75;*/
 }
