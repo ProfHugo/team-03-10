@@ -163,18 +163,22 @@ public class Main extends Application {
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
 			Main.setPage(taskDb.getView());
+			taskDb.refresh();
+			
 		});
 
 		Button taskHistoryBtn = new Button("History");
 		taskHistoryBtn.setId("taskDashboardBtn");
 		taskHistoryBtn.setOnAction(e -> {
 			Main.setPage(taskHistory.getView());
+			taskHistory.refresh();
 		});
 
 		Button settingsBtn = new Button("Settings");
 		settingsBtn.setId("settingsBtn");
 		settingsBtn.setOnAction(e -> {
 			Main.setPage(settingsView.getView());
+			settingsView.refresh();
 		});
 
 //		Label accountName = new Label(currentProfile.getProfileName());	// displays which profile is being displayed
