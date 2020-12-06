@@ -245,7 +245,7 @@ public class Main extends Application {
 //			System.out.println("current profile referenced by profiles? "+profiles.contains(currentProfile));
 //			System.out.println("can delete current profile? "+profileChoices.contains(currentProfile));
 
-			if (deletionChoices.size() > 1) {
+			if (deletionChoices.size() > 0) {
 				ChoiceDialog<Profile> popUp = new ChoiceDialog<>(deletionChoices.iterator().next(), deletionChoices);
 				popUp.setTitle("Profile Deletion Choices");
 				popUp.setHeaderText("Choose a profile to delete");
