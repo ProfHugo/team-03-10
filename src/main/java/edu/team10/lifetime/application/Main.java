@@ -51,27 +51,37 @@ public class Main extends Application {
 			if (saveManager.saveFileExists()) {
 				// try loading the thing
 				profiles = saveManager.readFromSaveFile();
-				if (profiles != null && profiles.size() > 0) {
-					// prompt for starting profile
-					ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
-					popUp.setTitle("Profile Choices");
-					popUp.setHeaderText("Choose a profile");
-					popUp.setContentText("Profiles: ");
+				if (profiles != null) {
+					if (profiles.size() > 1) {
+						// prompt for starting profile
+						ChoiceDialog<Profile> popUp = new ChoiceDialog<>(currentProfile, profiles);
+						popUp.setTitle("Profile Choices");
+						popUp.setHeaderText("Choose a profile");
+						popUp.setContentText("Profiles: ");
 
-					Optional<Profile> result = popUp.showAndWait();
+						Optional<Profile> result = popUp.showAndWait();
 
-					result.ifPresent(profileChosen -> {
-						currentProfile = profileChosen;
-					});
+						result.ifPresent(profileChosen -> {
+							currentProfile = profileChosen;
+						});
 
-					if (!result.isPresent()) {
+						if (!result.isPresent()) {
+							/*
+							 * Profile profileChosen = profiles.iterator().next(); currentProfile =
+							 * profileChosen;
+							 */
+							System.exit(0);
+						}
+
+					} else {
 						Profile profileChosen = profiles.iterator().next();
 						currentProfile = profileChosen;
 					}
-
-					loadSuccessful = currentProfile != null;
 				}
+
 			}
+
+			loadSuccessful = currentProfile != null;
 
 			if (!loadSuccessful) {
 				TextInputDialog popUp = new TextInputDialog("Profile Name");
@@ -164,7 +174,7 @@ public class Main extends Application {
 		taskDashboardBtn.setOnAction(e -> {
 			Main.setPage(taskDb.getView());
 			taskDb.refresh();
-			
+
 		});
 
 		Button taskHistoryBtn = new Button("History");
