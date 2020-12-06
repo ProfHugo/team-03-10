@@ -169,7 +169,6 @@ public class Main extends Application {
 		taskDashboardBtn.setId("taskDashboardBtn");
 		taskDashboardBtn.setOnAction(e -> {
 			Main.setPage(taskDb.getView());
-			taskDb.refresh();
 
 		});
 
@@ -231,7 +230,6 @@ public class Main extends Application {
 				if (!profileChosen.equals(currentProfile)) {
 					// display chosen profile
 					taskDb.setProfile(profileChosen);
-					taskDb.refresh();
 					settingsView.setProfile(profileChosen);
 					settingsView.refresh();
 					taskHistory.setProfile(profileChosen);
