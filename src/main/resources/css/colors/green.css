@@ -5,6 +5,6 @@
 }
 
 /* a lighter shade */
-#taskAnalysisBtn:hover {
+#taskAnalysisBtn:hover, #taskBox:hover {
 	-fx-background-color: "0xA5C9A2";
 }

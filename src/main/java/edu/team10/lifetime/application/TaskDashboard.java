@@ -10,6 +10,7 @@ import edu.team10.lifetime.util.TaskState;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -80,14 +81,15 @@ public class TaskDashboard implements IApplicationElement {
 		profile.addTask(taskName);
 
 		HBox taskContainer = new HBox();
+		taskContainer.setAlignment(Pos.CENTER_LEFT);
 		taskContainer.setId("taskBox");
 
 		// make & style labels & buttons
 		Label name = new Label(taskName);
-		name.setFont(new Font("Arial", 28));
+		name.setId("taskName");
 
 		Label status = new Label("Status: " + TaskState.INACTIVE.toString());
-		status.setFont(new Font("Arial", 20));
+		status.setId("status");
 
 		// Live Timer Display
 		Label timeDisplay = new Label("00:00:00"); // live display of time
